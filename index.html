@@ -243,6 +243,7 @@ body{min-height:100%;background:var(--cream);font-family:-apple-system,BlinkMacS
 .comm-ama-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
 .comm-ama-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
 .comm-ama-head{background:linear-gradient(135deg,var(--espresso),var(--latte));padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.comm-item{transition:opacity .15s;}
 .comm-ama-body{padding:10px 14px 12px;}
 .comm-ama-q{font-size:12px;color:var(--slate);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--sand);}
 .comm-ama-q:last-child{border-bottom:none;padding-bottom:0;}
@@ -443,14 +444,6 @@ body{min-height:100%;background:var(--cream);font-family:-apple-system,BlinkMacS
       <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:85%"></div></div></div>
     </div>
   </div>
-  <div class="bean-card">
-    <div class="bean-top"><div class="bean-flag">🇧🇷</div><div style="flex:1"><div class="bean-name">AFASA Natural</div><div class="bean-origin">Minas Gerais, Brazil</div></div><div class="score-pill">85.5</div></div>
-    <div class="flavor-bars">
-      <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:52%"></div></div></div>
-      <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:88%"></div></div></div>
-      <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:91%"></div></div></div>
-    </div>
-  </div>
   <div class="sec-label">Stories from the farm</div>
   <div class="story-card" onclick="goScreen('story')">
     <div class="story-img"><div style="font-size:24px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · Feb 2025</div></div>
@@ -513,47 +506,100 @@ body{min-height:100%;background:var(--cream);font-family:-apple-system,BlinkMacS
     <div class="hero-title">Community</div>
     <div class="hero-sub">Conversations between farmers &amp; coffee lovers</div>
   </div>
-  <div class="comm-filter-bar">
-    <div class="comm-filter active" onclick="commFilter(this)">All</div>
-    <div class="comm-filter" onclick="commFilter(this)">Farm updates</div>
-    <div class="comm-filter" onclick="commFilter(this)">Discussions</div>
-    <div class="comm-filter" onclick="commFilter(this)">Q&A</div>
+  <div class="comm-filter-bar" id="comm-filters">
+    <div class="comm-filter active" onclick="commFilter(this,'all')">All</div>
+    <div class="comm-filter" onclick="commFilter(this,'farm')">Farm updates</div>
+    <div class="comm-filter" onclick="commFilter(this,'discuss')">Discussions</div>
+    <div class="comm-filter" onclick="commFilter(this,'qa')">Q&A</div>
   </div>
   <div class="comm-compose" onclick="showToast('✍️ Share a brew tip or ask a question!')">
     <div class="comm-compose-ava">🙋</div>
     <div class="comm-compose-text">Share a thought, brew tip, or question...</div>
     <div style="font-size:18px;color:var(--latte)">📸</div>
   </div>
-  <div class="comm-ama-card" onclick="goScreen('ama')">
-    <div class="comm-ama-head"><div class="comm-live-dot"></div><div style="font-size:13px;font-weight:700;color:#fff;flex:1">Live Q&A with Amara Nakato</div><div style="font-size:10px;color:var(--latte-lt)">42 watching</div></div>
-    <div class="comm-ama-body"><div style="font-size:11px;color:var(--slate);margin-bottom:6px">Ask Amara anything about her farm, process, or life in Kampala.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">🌱 Growing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">💧 Processing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">☕ Tasting</div></div></div>
+
+  <!-- ═══ Q&A category ═══ -->
+  <div class="comm-item" data-cat="qa">
+    <div class="comm-ama-card" onclick="goScreen('ama')">
+      <div class="comm-ama-head"><div class="comm-live-dot"></div><div style="font-size:13px;font-weight:700;color:#fff;flex:1">Live Q&A with Amara Nakato</div><div style="font-size:10px;color:var(--latte-lt)">42 watching</div></div>
+      <div class="comm-ama-body"><div style="font-size:11px;color:var(--slate);margin-bottom:6px">Ask Amara anything about her farm, process, or life in Kampala.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">🌱 Growing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">💧 Processing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">☕ Tasting</div></div></div>
+    </div>
   </div>
-  <div class="sec-label">Latest posts</div>
-  <div class="comm-post">
-    <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👩🏾</div><div style="flex:1"><div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Kampala, Uganda · 2h ago</div></div></div>
-    <div class="comm-post-img" style="background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%)">🫘</div>
-    <div class="comm-post-body"><div class="comm-post-text">First cherries of the March harvest! The Bourbon seedlings are producing beautiful red cherries this year. Can't wait for the cupping results 🤞</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
-    <div class="comm-post-actions"><div class="comm-action liked" id="ca-1" onclick="toggleLike('ca-1')"><span class="comm-action-ico">❤️</span> 234</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 18</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+
+  <!-- ═══ Farm updates ═══ -->
+  <div class="comm-item" data-cat="farm">
+    <div class="sec-label">Farm updates</div>
+    <div class="comm-post">
+      <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👩🏾</div><div style="flex:1"><div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Kampala, Uganda · 2h ago</div></div></div>
+      <div class="comm-post-img" style="background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%)">🫘</div>
+      <div class="comm-post-body"><div class="comm-post-text">First cherries of the March harvest! The Bourbon seedlings are producing beautiful red cherries this year. Can't wait for the cupping results 🤞</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
+      <div class="comm-post-actions"><div class="comm-action liked" id="ca-1" onclick="toggleLike('ca-1')"><span class="comm-action-ico">❤️</span> 234</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 18</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+    </div>
   </div>
-  <div class="comm-post">
-    <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👨🏻</div><div style="flex:1"><div class="comm-post-name">Jake R. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Denver, CO · 5h ago</div></div></div>
-    <div class="comm-post-body"><div class="comm-post-text">Just brewed Amara's Great Lakes Washed as a V60 pour-over — the citrus notes are incredible this batch. Easily my favorite morning cup this month. Anyone else tried a longer bloom time with this one?</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
-    <div class="comm-post-actions"><div class="comm-action" id="ca-2" onclick="toggleLike('ca-2')"><span class="comm-action-ico">🤍</span> 47</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 12</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+
+  <div class="comm-item" data-cat="farm">
+    <div class="comm-post">
+      <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👨🏽</div><div style="flex:1"><div class="comm-post-name">Carlos Mendes <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Minas Gerais, Brazil · 8h ago</div></div></div>
+      <div class="comm-post-img" style="background:linear-gradient(135deg,#BA7517 0%,#8D6543 100%)">☀️</div>
+      <div class="comm-post-body"><div class="comm-post-text">Experimenting with a new 24-day natural drying process on raised beds. The extended time should bring out more chocolate and berry sweetness. Will share cupping results next week!</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
+      <div class="comm-post-actions"><div class="comm-action" id="ca-3" onclick="toggleLike('ca-3')"><span class="comm-action-ico">🤍</span> 89</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 31</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+    </div>
   </div>
-  <div class="comm-post">
-    <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👨🏽</div><div style="flex:1"><div class="comm-post-name">Carlos Mendes <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Minas Gerais, Brazil · 8h ago</div></div></div>
-    <div class="comm-post-img" style="background:linear-gradient(135deg,#BA7517 0%,#8D6543 100%)">☀️</div>
-    <div class="comm-post-body"><div class="comm-post-text">Experimenting with a new 24-day natural drying process on raised beds. The extended time should bring out more chocolate and berry sweetness. Will share cupping results next week!</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
-    <div class="comm-post-actions"><div class="comm-action" id="ca-3" onclick="toggleLike('ca-3')"><span class="comm-action-ico">🤍</span> 89</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 31</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+
+  <div class="comm-item" data-cat="farm">
+    <div class="comm-post">
+      <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👩🏾</div><div style="flex:1"><div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Kampala, Uganda · 3d ago</div></div></div>
+      <div class="comm-post-body"><div class="comm-post-text">New drying beds are finally installed! Took two weeks of construction. These raised beds allow better airflow which should improve the uniformity of our next batch. Grateful for the support from the campaign — this wouldn't have happened without you all.</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
+      <div class="comm-post-actions"><div class="comm-action liked" id="ca-7" onclick="toggleLike('ca-7')"><span class="comm-action-ico">❤️</span> 156</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 9</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+    </div>
   </div>
-  <div class="sec-label">Trending discussions</div>
-  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">What's the best brew method for high-altitude washed beans?</div><div class="comm-thread-preview">Started by Sarah K. — "I've been experimenting with my Chemex vs V60..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>24</span></div><div class="comm-thread-stat">❤️ <span>56</span></div><div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div></div></div>
-  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">Farmer Q: What flavor notes do you taste in your own coffee?</div><div class="comm-thread-preview">Amara answers — "Honestly I taste red fruit and honey..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>41</span></div><div class="comm-thread-stat">❤️ <span>128</span></div><div class="comm-thread-stat" style="margin-left:auto">⭐ Staff pick</div></div></div>
-  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">How does blockchain verification actually work?</div><div class="comm-thread-preview">Tim from Coda explains the Bext360 process...</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>17</span></div><div class="comm-thread-stat">❤️ <span>93</span></div><div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div></div></div>
-  <div class="comm-post">
-    <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👩🏼</div><div style="flex:1"><div class="comm-post-name">Maria L. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Boulder, CO · 1d ago</div></div></div>
-    <div class="comm-post-body"><div class="comm-post-text">Gave Coda's AFASA Natural to my parents who "only drink Folgers." They couldn't believe coffee could taste like this. My dad asked for Carlos's name so he could thank him. ❤️</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
-    <div class="comm-post-actions"><div class="comm-action liked" id="ca-4" onclick="toggleLike('ca-4')"><span class="comm-action-ico">❤️</span> 312</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 45</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+
+  <!-- ═══ Discussions ═══ -->
+  <div class="comm-item" data-cat="discuss">
+    <div class="sec-label">Discussions</div>
+    <div class="comm-post">
+      <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👨🏻</div><div style="flex:1"><div class="comm-post-name">Jake R. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Denver, CO · 5h ago</div></div></div>
+      <div class="comm-post-body"><div class="comm-post-text">Just brewed Amara's Great Lakes Washed as a V60 pour-over — the citrus notes are incredible this batch. Easily my favorite morning cup this month. Anyone else tried a longer bloom time with this one?</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
+      <div class="comm-post-actions"><div class="comm-action" id="ca-2" onclick="toggleLike('ca-2')"><span class="comm-action-ico">🤍</span> 47</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 12</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+    </div>
+  </div>
+
+  <div class="comm-item" data-cat="discuss">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">What's the best brew method for high-altitude washed beans?</div><div class="comm-thread-preview">Started by Sarah K. — "I've been experimenting with my Chemex vs V60 for Amara's latest batch and the results are very different..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>24</span> replies</div><div class="comm-thread-stat">❤️ <span>56</span></div><div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="discuss">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">Natural vs washed — which do you prefer and why?</div><div class="comm-thread-preview">Started by Tom B. — "I used to be a washed-only person, but Carlos's AFASA Natural completely changed my mind. The body is unreal..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>67</span> replies</div><div class="comm-thread-stat">❤️ <span>189</span></div><div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="discuss">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">How does blockchain verification actually work?</div><div class="comm-thread-preview">Tim from Coda explains the Bext360 process from cherry scan to final record on the blockchain...</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>17</span> replies</div><div class="comm-thread-stat">❤️ <span>93</span></div><div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="discuss">
+    <div class="comm-post">
+      <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👩🏼</div><div style="flex:1"><div class="comm-post-name">Maria L. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Boulder, CO · 1d ago</div></div></div>
+      <div class="comm-post-body"><div class="comm-post-text">Gave Coda's AFASA Natural to my parents who "only drink Folgers." They couldn't believe coffee could taste like this. My dad asked for Carlos's name so he could thank him. ❤️</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
+      <div class="comm-post-actions"><div class="comm-action liked" id="ca-4" onclick="toggleLike('ca-4')"><span class="comm-action-ico">❤️</span> 312</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 45</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ Q&A ═══ -->
+  <div class="comm-item" data-cat="qa">
+    <div class="sec-label">Questions & Answers</div>
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">🙋 What flavor notes do you taste in your own coffee, Amara?</div><div class="comm-thread-preview">Amara answers — "Honestly I taste red fruit and honey. But my daughter says it tastes like chocolate!" — 41 follow-up questions from consumers</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>41</span> replies</div><div class="comm-thread-stat">❤️ <span>128</span></div><div class="comm-thread-stat" style="margin-left:auto">⭐ Staff pick</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="qa">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">🙋 Carlos, what made you try natural processing?</div><div class="comm-thread-preview">Carlos answers — "My grandfather always did washed, but I visited a farm in Ethiopia and saw how naturals develop these incredible fruit flavors..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>28</span> replies</div><div class="comm-thread-stat">❤️ <span>74</span></div><div class="comm-thread-stat" style="margin-left:auto">⭐ Farmer answered</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="qa">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">🙋 How does altitude affect coffee flavor?</div><div class="comm-thread-preview">Tim from Coda — "Higher altitude means cooler temps, slower cherry development, and denser beans. That's why Amara's 1,650m farm produces such bright, complex cups..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>33</span> replies</div><div class="comm-thread-stat">❤️ <span>102</span></div><div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div></div></div>
+  </div>
+
+  <div class="comm-item" data-cat="qa">
+    <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">🙋 What happens to the coffee cherry pulp after washing?</div><div class="comm-thread-preview">Amara answers — "We compost it! It goes back to the soil around the coffee plants. Nothing is wasted on our farm."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>15</span> replies</div><div class="comm-thread-stat">❤️ <span>61</span></div><div class="comm-thread-stat" style="margin-left:auto">⭐ Farmer answered</div></div></div>
   </div>
 </div></div></div>
 
@@ -761,7 +807,14 @@ function tapSup(id, ico, lbl) {
   showToast(msgs[id] || 'Done!');
 }
 function joinCamp(btn) { btn.textContent = '✓ Joined!'; btn.style.background = 'var(--sage)'; showToast('🫘 You joined the campaign!'); }
-function commFilter(el) { el.parentElement.querySelectorAll('.comm-filter').forEach(f => f.classList.remove('active')); el.classList.add('active'); showToast('Showing: ' + el.textContent); }
+function commFilter(el, cat) {
+  el.parentElement.querySelectorAll('.comm-filter').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#s-community .comm-item').forEach(item => {
+    if (cat === 'all') { item.style.display = ''; }
+    else { item.style.display = item.dataset.cat === cat ? '' : 'none'; }
+  });
+}
 function toggleLike(id) {
   const el = document.getElementById(id);
   if (el.classList.contains('liked')) { el.classList.remove('liked'); el.querySelector('.comm-action-ico').textContent = '🤍'; }
