@@ -5,995 +5,576 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Coda Coffee — Bean Journey</title>
 <style>
-  /* ── reset & base ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --espresso:  #2D1A0E;
-    --latte:     #8D6543;
-    --latte-lt:  #D7A97A;
-    --cream:     #F5EFE6;
-    --sand:      #E8D9C4;
-    --tan:       #C4B89A;
-    --sage:      #3B6D11;
-    --sage-lt:   #EAF3DE;
-    --amber:     #BA7517;
-    --amber-lt:  #FAEEDA;
-    --slate:     #4A5568;
-    --white:     #FFFFFF;
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-    --radius-xl: 32px;
-  }
-  html, body {
-    height: 100%;
-    background: #1a1a1a;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* ── phone shell ── */
-  .device {
-    width: 375px;
-    min-height: 812px;
-    background: var(--cream);
-    border-radius: 48px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 2px #333;
-  }
-  .status-bar {
-    background: var(--espresso);
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-  }
-  .status-bar span { color: #fff; font-size: 12px; font-weight: 600; }
-  .status-time { font-size: 15px !important; }
-
-  /* ── screen system ── */
-  .screen { display: none; flex-direction: column; height: calc(812px - 44px); }
-  .screen.active { display: flex; }
-  .scroll-body { flex: 1; overflow-y: auto; overflow-x: hidden; }
-  .scroll-body::-webkit-scrollbar { display: none; }
-
-  /* ── bottom nav ── */
-  .bottom-nav {
-    display: flex;
-    background: var(--white);
-    border-top: 1px solid var(--sand);
-    padding: 8px 0 20px;
-  }
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    padding: 4px 0;
-  }
-  .nav-icon {
-    width: 24px; height: 24px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .nav-icon svg { width: 22px; height: 22px; stroke: var(--tan); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .nav-item.active .nav-icon svg { stroke: var(--latte); }
-  .nav-label { font-size: 10px; color: var(--tan); font-weight: 500; }
-  .nav-item.active .nav-label { color: var(--latte); }
-
-  /* ── shared components ── */
-  .hero-bar {
-    background: var(--espresso);
-    padding: 16px 20px 14px;
-  }
-  .hero-eyebrow { font-size: 10px; color: var(--latte-lt); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .hero-title { font-size: 20px; font-weight: 700; color: #fff; line-height: 1.2; }
-  .hero-sub { font-size: 12px; color: var(--latte-lt); margin-top: 4px; }
-  .back-row {
-    display: flex; align-items: center; gap: 8px;
-    cursor: pointer;
-  }
-  .back-btn { font-size: 22px; color: var(--latte-lt); line-height: 1; }
-  .back-title { font-size: 15px; font-weight: 600; color: #fff; }
-  .back-tag { margin-left: auto; font-size: 10px; color: var(--latte-lt); }
-
-  .section-label {
-    font-size: 10px; font-weight: 700; color: var(--tan);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 14px 20px 8px;
-  }
-
-  /* pill badge */
-  .badge {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 8px; border-radius: 20px;
-  }
-  .badge-green { background: var(--sage-lt); color: var(--sage); }
-  .badge-amber { background: var(--amber-lt); color: var(--amber); }
-
-  /* card */
-  .card {
-    background: var(--white);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--sand);
-    margin: 0 16px 12px;
-    overflow: hidden;
-  }
-  .card-pad { padding: 14px 16px; }
-
-  /* ── SCREEN: HOME ── */
-  .qr-cta {
-    margin: 14px 16px 0;
-    background: rgba(255,255,255,0.10);
-    border: 1px solid rgba(215,169,122,0.35);
-    border-radius: var(--radius-md);
-    padding: 12px 14px;
-    display: flex; align-items: center; gap: 12px;
-    cursor: pointer;
-  }
-  .qr-cta:active { opacity: 0.8; }
-  .qr-box {
-    width: 40px; height: 40px;
-    background: var(--latte-lt);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .qr-box svg { width: 22px; height: 22px; stroke: var(--espresso); fill: none; stroke-width: 2; }
-  .qr-text { flex: 1; }
-  .qr-title { font-size: 14px; font-weight: 600; color: #fff; }
-  .qr-sub { font-size: 11px; color: var(--latte-lt); margin-top: 2px; }
-  .qr-arrow { font-size: 20px; color: var(--latte-lt); }
-
-  /* bean card */
-  .bean-card {
-    background: var(--white);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--sand);
-    margin: 0 16px 10px;
-    padding: 14px 14px 12px;
-    cursor: pointer;
-  }
-  .bean-card:active { background: #faf6f0; }
-  .bean-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .bean-flag {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--sand);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .bean-info { flex: 1; }
-  .bean-name { font-size: 14px; font-weight: 600; color: var(--espresso); }
-  .bean-origin { font-size: 11px; color: var(--slate); margin-top: 1px; }
-  .score-pill {
-    background: var(--sage-lt); color: var(--sage);
-    font-size: 11px; font-weight: 700;
-    padding: 3px 9px; border-radius: 20px;
-  }
-  .flavor-bars { display: flex; flex-direction: column; gap: 5px; }
-  .flavor-row { display: flex; align-items: center; gap: 8px; }
-  .flavor-label { font-size: 10px; color: var(--tan); width: 56px; flex-shrink: 0; }
-  .flavor-track { flex: 1; height: 4px; background: var(--sand); border-radius: 4px; }
-  .flavor-fill { height: 4px; background: var(--latte); border-radius: 4px; }
-
-  /* story card */
-  .story-card {
-    background: var(--white);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--sand);
-    margin: 0 16px 10px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .story-card:active { opacity: 0.88; }
-  .story-img {
-    height: 88px;
-    background: linear-gradient(135deg, var(--latte) 0%, var(--espresso) 100%);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 4px;
-  }
-  .story-img-icon { font-size: 28px; }
-  .story-img-caption { font-size: 10px; color: rgba(255,255,255,0.65); }
-  .story-body { padding: 10px 14px 12px; }
-  .story-title { font-size: 13px; font-weight: 600; color: var(--espresso); line-height: 1.4; }
-  .story-desc { font-size: 11px; color: var(--slate); margin-top: 4px; line-height: 1.5; }
-
-  /* ── SCREEN: SCAN ── */
-  .scan-area {
-    margin: 24px 20px 0;
-    border: 2px dashed var(--latte);
-    border-radius: var(--radius-md);
-    height: 160px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 10px;
-  }
-  .scan-icon-box {
-    width: 52px; height: 52px;
-    background: var(--amber-lt);
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .scan-icon-box svg { width: 28px; height: 28px; stroke: var(--amber); fill: none; stroke-width: 2; }
-  .scan-hint { font-size: 14px; font-weight: 600; color: var(--espresso); }
-  .scan-sub { font-size: 11px; color: var(--slate); }
-
-  .or-row { display: flex; align-items: center; gap: 10px; margin: 16px 20px; }
-  .or-line { flex: 1; height: 1px; background: var(--sand); }
-  .or-text { font-size: 11px; color: var(--tan); }
-
-  .batch-input {
-    margin: 0 20px;
-    background: var(--sand);
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
-    font-size: 14px; font-weight: 600;
-    color: var(--slate);
-    letter-spacing: 0.05em;
-    border: none; width: calc(100% - 40px);
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    outline: none;
-  }
-  .batch-input:focus { box-shadow: 0 0 0 2px var(--latte); }
-
-  .primary-btn {
-    display: block; width: calc(100% - 40px);
-    margin: 14px 20px 0;
-    background: var(--espresso);
-    color: #fff;
-    border: none; border-radius: var(--radius-md);
-    padding: 14px;
-    font-size: 14px; font-weight: 600;
-    cursor: pointer;
-    text-align: center;
-  }
-  .primary-btn:active { opacity: 0.85; }
-
-  .recent-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--sand);
-    cursor: pointer;
-  }
-  .recent-row:last-child { border-bottom: none; }
-  .recent-row:active { background: #f9f5f0; }
-  .recent-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--latte); flex-shrink: 0; }
-  .recent-name { flex: 1; font-size: 13px; font-weight: 500; color: var(--espresso); }
-  .recent-date { font-size: 11px; color: var(--tan); }
-
-  /* ── SCREEN: FARMER REVEAL ── */
-  .reveal-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 28px 20px 20px;
-  }
-  .farmer-avatar {
-    width: 88px; height: 88px; border-radius: 50%;
-    background: var(--latte-lt);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 44px; margin-bottom: 14px;
-    border: 3px solid var(--latte);
-  }
-  .farmer-name { font-size: 22px; font-weight: 700; color: var(--espresso); text-align: center; }
-  .farmer-loc { font-size: 13px; color: var(--slate); text-align: center; margin-top: 3px; }
-
-  .payment-box {
-    width: 100%;
-    background: var(--sage-lt);
-    border: 1px solid var(--sage);
-    border-radius: var(--radius-md);
-    padding: 12px 16px; margin-top: 16px;
-  }
-  .payment-title { font-size: 12px; font-weight: 700; color: var(--sage); margin-bottom: 4px; }
-  .payment-val { font-size: 14px; font-weight: 600; color: #27500A; }
-
-  .score-row {
-    display: flex; align-items: center; gap: 10px;
-    width: 100%; margin-top: 12px;
-    background: var(--white);
-    border: 1px solid var(--sand);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-  }
-  .score-num { font-size: 32px; font-weight: 700; color: var(--latte); }
-  .score-info { flex: 1; }
-  .score-label { font-size: 12px; font-weight: 600; color: var(--espresso); }
-  .score-sub { font-size: 11px; color: var(--slate); margin-top: 2px; }
-
-  .farmer-story {
-    width: 100%; margin-top: 12px;
-    font-size: 13px; color: var(--slate);
-    line-height: 1.65;
-  }
-  .moat-badge {
-    width: 100%; margin-top: 14px;
-    background: var(--espresso);
-    border-radius: var(--radius-md);
-    padding: 11px 16px;
-    font-size: 11px; color: var(--latte-lt);
-    line-height: 1.5;
-    text-align: center;
-  }
-  .moat-strong { color: #fff; font-weight: 600; }
-
-  .outline-btn {
-    display: block; width: 100%;
-    margin-top: 14px;
-    background: transparent;
-    color: var(--espresso);
-    border: 1.5px solid var(--latte);
-    border-radius: var(--radius-md);
-    padding: 13px;
-    font-size: 14px; font-weight: 600;
-    cursor: pointer; text-align: center;
-  }
-  .outline-btn:active { background: var(--sand); }
-
-  /* ── SCREEN: JOURNEY ── */
-  .chain-step {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--sand);
-    position: relative;
-  }
-  .chain-step:last-child { border-bottom: none; }
-  .step-icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
-  .step-icon {
-    width: 34px; height: 34px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
-  }
-  .step-icon.done { background: var(--sage-lt); }
-  .step-icon.active { background: var(--amber-lt); }
-  .step-icon.pending { background: var(--sand); opacity: 0.5; }
-  .step-vline { width: 1.5px; flex: 1; min-height: 20px; background: var(--sand); margin-top: 4px; }
-  .step-body { flex: 1; padding-bottom: 4px; }
-  .step-title { font-size: 14px; font-weight: 600; color: var(--espresso); }
-  .step-detail { font-size: 11px; color: var(--slate); margin-top: 2px; line-height: 1.5; }
-  .step-time { font-size: 10px; color: var(--tan); margin-top: 3px; }
-  .step-verified {
-    display: inline-flex; align-items: center; gap: 3px;
-    background: var(--sage-lt); color: var(--sage);
-    font-size: 9px; font-weight: 700;
-    padding: 2px 7px; border-radius: 20px; margin-top: 4px;
-  }
-  .step-progress {
-    display: inline-block;
-    background: var(--amber-lt); color: var(--amber);
-    font-size: 9px; font-weight: 700;
-    padding: 2px 7px; border-radius: 20px; margin-top: 4px;
-  }
-
-  .batch-meta {
-    padding: 10px 20px;
-    font-size: 11px; color: var(--tan);
-    border-bottom: 1px solid var(--sand);
-  }
-  .batch-meta span { font-weight: 600; color: var(--slate); }
-
-  .payment-summary {
-    margin: 12px 16px;
-    background: var(--white);
-    border: 1px solid var(--sand);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-  }
-  .ps-label { font-size: 11px; color: var(--tan); margin-bottom: 3px; }
-  .ps-val { font-size: 15px; font-weight: 700; color: var(--espresso); }
-  .ps-sub { font-size: 10px; color: var(--sage); margin-top: 2px; }
-
-  /* ── SCREEN: IMPACT ── */
-  .impact-hero { background: var(--espresso); padding: 16px 20px; }
-  .impact-hero-title { font-size: 18px; font-weight: 700; color: #fff; }
-  .impact-hero-sub { font-size: 12px; color: var(--latte-lt); margin-top: 3px; }
-
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px 0; }
-  .stat-tile {
-    background: var(--white);
-    border: 1px solid var(--sand);
-    border-radius: var(--radius-md);
-    padding: 12px 12px 10px;
-  }
-  .stat-num { font-size: 24px; font-weight: 700; color: var(--latte); }
-  .stat-label { font-size: 10px; color: var(--slate); margin-top: 2px; line-height: 1.4; }
-
-  .farmer-chip {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--sand);
-    cursor: pointer;
-  }
-  .farmer-chip:active { background: #f9f5f0; }
-  .farmer-chip:last-child { border-bottom: none; }
-  .chip-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
-    background: var(--latte-lt);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0;
-  }
-  .chip-info { flex: 1; }
-  .chip-name { font-size: 13px; font-weight: 600; color: var(--espresso); }
-  .chip-detail { font-size: 11px; color: var(--slate); margin-top: 1px; }
-  .chip-arrow { font-size: 18px; color: var(--tan); }
-
-  .share-cta {
-    margin: 14px 16px;
-    background: var(--sage-lt);
-    border: 1px solid var(--sage);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    display: flex; align-items: center; gap: 12px;
-    cursor: pointer;
-  }
-  .share-icon { font-size: 24px; }
-  .share-text .share-title { font-size: 13px; font-weight: 600; color: var(--sage); }
-  .share-text .share-sub { font-size: 11px; color: #3B6D11; margin-top: 1px; }
-
-  /* ── toast ── */
-  .toast {
-    position: absolute; bottom: 100px; left: 20px; right: 20px;
-    background: var(--espresso); color: #fff;
-    border-radius: var(--radius-md); padding: 12px 16px;
-    font-size: 13px; font-weight: 500;
-    text-align: center; opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none; z-index: 99;
-  }
-  .toast.show { opacity: 1; }
-
-  /* scrollbar hidden globally */
-  * { scrollbar-width: none; -ms-overflow-style: none; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --espresso:#2D1A0E;--latte:#8D6543;--latte-lt:#D7A97A;
+  --cream:#F5EFE6;--sand:#E8D9C4;--tan:#C4B89A;
+  --sage:#3B6D11;--sage-lt:#EAF3DE;
+  --amber:#BA7517;--amber-lt:#FAEEDA;
+  --slate:#4A5568;--white:#FFFFFF;
+  --r-sm:8px;--r-md:12px;--r-lg:20px;
+}
+html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:24px;}
+.edition-toggle{position:absolute;top:-48px;left:50%;transform:translateX(-50%);display:flex;background:#222;border-radius:20px;padding:3px;gap:3px;white-space:nowrap;}
+.ed-btn{padding:6px 18px;border-radius:16px;border:none;cursor:pointer;font-size:12px;font-weight:600;color:#888;background:transparent;transition:all 0.2s;}
+.ed-btn.active{background:var(--latte);color:#fff;}
+.ed-btn.farmer.active{background:var(--sage);}
+.device-wrap{position:relative;flex-shrink:0;}
+.device{width:375px;min-height:812px;background:var(--cream);border-radius:48px;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 2px #333;}
+.status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:background .3s;}
+.status-bar.consumer{background:var(--espresso);}
+.status-bar.farmer{background:var(--sage);}
+.status-bar span{color:#fff;font-size:12px;font-weight:600;}
+.status-time{font-size:15px!important;}
+.screen{display:none;flex-direction:column;height:calc(812px - 44px);}
+.screen.active{display:flex;}
+.scroll-body{flex:1;overflow-y:auto;}
+.scroll-body::-webkit-scrollbar{display:none;}
+*{scrollbar-width:none;}
+/* nav */
+.bottom-nav{display:flex;background:var(--white);border-top:1px solid var(--sand);padding:8px 0 20px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;}
+.nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
+.nav-icon svg{width:22px;height:22px;stroke:var(--tan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav-item.active .nav-icon svg{stroke:var(--latte);}
+.nav-item.active.fnav .nav-icon svg{stroke:var(--sage);}
+.nav-label{font-size:10px;color:var(--tan);font-weight:500;}
+.nav-item.active .nav-label{color:var(--latte);}
+.nav-item.active.fnav .nav-label{color:var(--sage);}
+/* shared */
+.hero-bar{padding:16px 20px 14px;transition:background .3s;}
+.hero-bar.consumer{background:var(--espresso);}
+.hero-bar.farmer{background:var(--sage);}
+.eyebrow{font-size:10px;color:var(--latte-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.eyebrow.f{color:rgba(255,255,255,.6);}
+.hero-title{font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
+.hero-sub{font-size:12px;color:var(--latte-lt);margin-top:4px;}
+.hero-sub.f{color:rgba(255,255,255,.65);}
+.back-row{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.back-btn{font-size:22px;color:var(--latte-lt);line-height:1;}
+.back-btn.f{color:rgba(255,255,255,.7);}
+.back-title{font-size:15px;font-weight:600;color:#fff;}
+.back-tag{margin-left:auto;font-size:10px;color:var(--latte-lt);}
+.sec-label{font-size:10px;font-weight:700;color:var(--tan);text-transform:uppercase;letter-spacing:.08em;padding:14px 20px 8px;}
+.card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 12px;overflow:hidden;}
+/* bean card */
+.bean-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:14px 14px 12px;cursor:pointer;}
+.bean-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.bean-flag{width:34px;height:34px;border-radius:50%;background:var(--sand);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.bean-name{font-size:14px;font-weight:600;color:var(--espresso);}
+.bean-origin{font-size:11px;color:var(--slate);margin-top:1px;}
+.score-pill{background:var(--sage-lt);color:var(--sage);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.flavor-bars{display:flex;flex-direction:column;gap:5px;}
+.flavor-row{display:flex;align-items:center;gap:8px;}
+.flavor-lbl{font-size:10px;color:var(--tan);width:56px;flex-shrink:0;}
+.flavor-track{flex:1;height:4px;background:var(--sand);border-radius:4px;}
+.flavor-fill{height:4px;background:var(--latte);border-radius:4px;}
+/* campaign */
+.camp-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
+.camp-head{background:var(--latte);padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.camp-lbl{font-size:11px;font-weight:700;color:#fff;letter-spacing:.05em;text-transform:uppercase;}
+.camp-body{padding:10px 14px 12px;}
+.camp-title{font-size:13px;font-weight:700;color:var(--espresso);}
+.camp-desc{font-size:11px;color:var(--slate);margin-top:3px;}
+.cp-row{display:flex;justify-content:space-between;margin-bottom:4px;margin-top:8px;}
+.cp-lbl{font-size:10px;color:var(--tan);}
+.cp-val{font-size:10px;font-weight:700;color:var(--latte);}
+.cp-track{width:100%;height:6px;background:var(--sand);border-radius:4px;}
+.cp-fill{height:6px;background:var(--latte);border-radius:4px;transition:width .4s;}
+.camp-btn{display:block;width:100%;margin-top:10px;background:var(--latte);color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;}
+.camp-btn:active{opacity:.85;}
+/* story card */
+.story-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
+.story-img{height:82px;background:linear-gradient(135deg,var(--latte) 0%,var(--espresso) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.story-body{padding:9px 14px 11px;}
+.story-title{font-size:13px;font-weight:600;color:var(--espresso);line-height:1.35;}
+.story-desc{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
+/* qr cta */
+.qr-cta{margin:14px 16px 0;background:rgba(255,255,255,.1);border:1px solid rgba(215,169,122,.35);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.qr-box{width:40px;height:40px;background:var(--latte-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qr-box svg{width:22px;height:22px;stroke:var(--espresso);fill:none;stroke-width:2;}
+/* scan */
+.scan-area{margin:24px 20px 0;border:2px dashed var(--latte);border-radius:var(--r-md);height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+.scan-ico{width:48px;height:48px;background:var(--amber-lt);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;}
+.scan-ico svg{width:26px;height:26px;stroke:var(--amber);fill:none;stroke-width:2;}
+.or-row{display:flex;align-items:center;gap:10px;margin:14px 20px;}
+.or-line{flex:1;height:1px;background:var(--sand);}
+.or-text{font-size:11px;color:var(--tan);}
+.batch-input{margin:0 20px;background:var(--sand);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;font-weight:600;color:var(--slate);border:none;width:calc(100% - 40px);font-family:monospace;outline:none;}
+.primary-btn{display:block;width:calc(100% - 40px);margin:14px 20px 0;background:var(--espresso);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;}
+.primary-btn.sage{background:var(--sage);}
+.primary-btn:active{opacity:.85;}
+.recent-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;}
+.recent-row:last-child{border-bottom:none;}
+.rdot{width:8px;height:8px;border-radius:50%;background:var(--latte);flex-shrink:0;}
+/* reveal */
+.reveal-wrap{display:flex;flex-direction:column;align-items:center;padding:24px 20px 20px;}
+.farmer-avatar{width:80px;height:80px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:12px;border:3px solid var(--latte);}
+.farmer-name{font-size:21px;font-weight:700;color:var(--espresso);text-align:center;}
+.farmer-loc{font-size:12px;color:var(--slate);text-align:center;margin-top:3px;}
+.pay-box{width:100%;background:var(--sage-lt);border:1px solid var(--sage);border-radius:var(--r-md);padding:11px 16px;margin-top:14px;}
+.pay-title{font-size:12px;font-weight:700;color:var(--sage);margin-bottom:3px;}
+.pay-val{font-size:13px;font-weight:600;color:#27500A;}
+.score-row{display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:11px 16px;}
+.score-num{font-size:30px;font-weight:700;color:var(--latte);}
+.score-lbl{font-size:12px;font-weight:600;color:var(--espresso);}
+.score-sub{font-size:10px;color:var(--slate);margin-top:2px;}
+.farmer-story{width:100%;margin-top:10px;font-size:12px;color:var(--slate);line-height:1.65;}
+.moat-badge{width:100%;margin-top:12px;background:var(--espresso);border-radius:var(--r-md);padding:10px 16px;font-size:11px;color:var(--latte-lt);line-height:1.5;text-align:center;}
+.moat-strong{color:#fff;font-weight:600;}
+.outline-btn{display:block;width:100%;margin-top:12px;background:transparent;color:var(--espresso);border:1.5px solid var(--latte);border-radius:var(--r-md);padding:12px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;}
+/* support bar */
+.sup-bar{width:100%;margin-top:12px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:10px 14px;}
+.sup-title{font-size:11px;font-weight:700;color:var(--espresso);margin-bottom:8px;}
+.sup-btns{display:flex;gap:8px;}
+.sup-btn{flex:1;padding:7px 4px;background:var(--cream);border:1px solid var(--sand);border-radius:var(--r-sm);font-size:11px;color:var(--slate);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.sup-btn.active{background:var(--sage-lt);border-color:var(--sage);color:var(--sage);}
+.sup-btn:active{transform:scale(.95);}
+.sup-ico{font-size:18px;}
+/* journey */
+.chain-step{display:flex;align-items:flex-start;gap:12px;padding:11px 20px;border-bottom:1px solid var(--sand);}
+.chain-step:last-child{border-bottom:none;}
+.step-ico-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.step-ico{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.step-ico.done{background:var(--sage-lt);}
+.step-ico.inprogress{background:var(--amber-lt);}
+.step-ico.pending{background:var(--sand);opacity:.45;}
+.step-vline{width:1.5px;flex:1;min-height:16px;background:var(--sand);margin-top:4px;}
+.step-body{flex:1;padding-bottom:2px;}
+.step-title{font-size:13px;font-weight:600;color:var(--espresso);}
+.step-detail{font-size:10px;color:var(--slate);margin-top:2px;line-height:1.5;}
+.step-time{font-size:9px;color:var(--tan);margin-top:2px;}
+.step-ok{display:inline-block;background:var(--sage-lt);color:var(--sage);font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;margin-top:3px;}
+.step-prog{display:inline-block;background:var(--amber-lt);color:var(--amber);font-size:9px;font-weight:700;padding:1px 7px;border-radius:20px;margin-top:3px;}
+.batch-meta{padding:9px 20px;font-size:11px;color:var(--tan);border-bottom:1px solid var(--sand);}
+.batch-meta span{font-weight:600;color:var(--slate);}
+.pay-summary{margin:10px 16px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:11px 16px;}
+/* impact */
+.impact-hero{padding:16px 20px;}
+.impact-hero.consumer{background:var(--espresso);}
+.impact-hero.farmer{background:var(--sage);}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px 0;}
+.stat-tile{background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:11px 12px 9px;}
+.stat-num{font-size:22px;font-weight:700;color:var(--latte);}
+.stat-num.sage{color:var(--sage);}
+.stat-lbl{font-size:10px;color:var(--slate);margin-top:2px;line-height:1.4;}
+.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;}
+.chip:last-child{border-bottom:none;}
+.chip-ava{width:34px;height:34px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.chip-name{font-size:13px;font-weight:600;color:var(--espresso);}
+.chip-detail{font-size:11px;color:var(--slate);margin-top:1px;}
+.share-cta{margin:10px 16px;background:var(--sage-lt);border:1px solid var(--sage);border-radius:var(--r-md);padding:11px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+/* badges */
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:2px 16px 0;}
+.badge-tile{background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:10px 8px;text-align:center;}
+.badge-tile.earned{background:var(--amber-lt);border-color:var(--amber);}
+.badge-ico{font-size:24px;margin-bottom:4px;}
+.badge-name{font-size:9px;font-weight:700;color:var(--espresso);}
+.badge-status{font-size:8px;color:var(--tan);margin-top:2px;}
+.badge-status.earned{color:var(--amber);font-weight:600;}
+/* farmer edition */
+.f-cta{margin:14px 16px 0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.f-cta:active{opacity:.8;}
+.f-cta-ico{width:40px;height:40px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.update-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;}
+.update-head{display:flex;align-items:center;gap:10px;padding:10px 14px 8px;}
+.update-ava{width:30px;height:30px;border-radius:50%;background:var(--sage-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.update-img{height:110px;background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%);display:flex;align-items:center;justify-content:center;font-size:40px;}
+.update-body{padding:10px 14px 12px;}
+.update-text{font-size:12px;color:var(--slate);line-height:1.55;}
+.reactions{display:flex;gap:8px;margin-top:8px;}
+.reaction{display:flex;align-items:center;gap:3px;background:var(--cream);border-radius:20px;padding:3px 9px;font-size:11px;color:var(--slate);cursor:pointer;border:1px solid var(--sand);}
+.reaction.active{background:var(--sage-lt);color:var(--sage);border-color:var(--sage);}
+.upload-btn{display:flex;align-items:center;gap:12px;margin:0 16px 10px;background:var(--white);border:2px dashed var(--sage);border-radius:var(--r-md);padding:14px;cursor:pointer;}
+.upload-ico{width:40px;height:40px;background:var(--sage-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.upload-title{font-size:13px;font-weight:600;color:var(--sage);}
+.upload-sub{font-size:11px;color:var(--tan);margin-top:1px;}
+.signal-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--sand);}
+.signal-item:last-child{border-bottom:none;}
+.signal-ico{font-size:18px;flex-shrink:0;width:26px;text-align:center;}
+.signal-text{flex:1;font-size:12px;color:var(--slate);line-height:1.4;}
+.signal-text strong{color:var(--espresso);font-weight:600;}
+.signal-time{font-size:10px;color:var(--tan);}
+.edu-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.edu-ico{width:38px;height:38px;background:var(--sage-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.edu-title{font-size:13px;font-weight:600;color:var(--espresso);}
+.edu-sub{font-size:11px;color:var(--tan);margin-top:2px;}
+/* toast */
+.toast{position:absolute;bottom:96px;left:20px;right:20px;background:var(--espresso);color:#fff;border-radius:var(--r-md);padding:11px 16px;font-size:13px;font-weight:500;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
 
-<div class="device">
-  <div class="status-bar">
-    <span class="status-time">9:41</span>
-    <span>Coda Coffee</span>
-    <span>●●●</span>
+<!-- ══ CONSUMER EDITION ══════════════════════════════════ -->
+<div class="device-wrap">
+  <div class="edition-toggle">
+    <button class="ed-btn active" onclick="setEd('consumer')">☕ Consumer Edition</button>
+    <button class="ed-btn farmer" onclick="setEd('farmer')">🌱 Farmer Edition</button>
   </div>
 
-  <!-- ══════════════════════════════════
-       SCREEN 1: HOME / DISCOVER
-  ══════════════════════════════════ -->
-  <div id="screen-home" class="screen active">
-    <div class="scroll-body">
-      <div class="hero-bar">
-        <div class="hero-eyebrow">Good morning</div>
-        <div class="hero-title">Know your coffee,<br>know your farmer.</div>
-        <div class="hero-sub">Every cup has a story. Start yours.</div>
-        <div class="qr-cta" onclick="goTo('scan')">
-          <div class="qr-box">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg>
+  <div class="device" id="dev-consumer">
+    <div class="status-bar consumer"><span class="status-time">9:41</span><span>Coda Coffee</span><span>●●●</span></div>
+
+    <!-- HOME -->
+    <div id="c-home" class="screen active">
+      <div class="scroll-body">
+        <div class="hero-bar consumer">
+          <div class="eyebrow">Good morning</div>
+          <div class="hero-title">Know your coffee,<br>know your farmer.</div>
+          <div class="hero-sub">Every cup has a story. Start yours.</div>
+          <div class="qr-cta" onclick="cGo('scan')">
+            <div class="qr-box"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Scan your bag</div><div style="font-size:11px;color:var(--latte-lt);margin-top:2px">Trace beans from farm to cup</div></div>
+            <div style="font-size:20px;color:var(--latte-lt)">›</div>
           </div>
-          <div class="qr-text">
-            <div class="qr-title">Scan your bag</div>
-            <div class="qr-sub">Trace beans from farm to cup</div>
-          </div>
-          <div class="qr-arrow">›</div>
         </div>
+        <div class="sec-label">🔥 Active campaign</div>
+        <div class="camp-card" onclick="cGo('campaigns')">
+          <div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div>
+          <div class="camp-body">
+            <div class="camp-title">Uganda Great Lakes — March harvest</div>
+            <div class="camp-desc">Help Amara reach her quality upgrade goal — follow her farm for the season.</div>
+            <div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val">847 / 1,000</div></div>
+            <div class="cp-track"><div class="cp-fill" style="width:84.7%"></div></div>
+            <button class="camp-btn" onclick="event.stopPropagation();joinCamp(this,'c')">Join this campaign</button>
+          </div>
+        </div>
+        <div class="sec-label">Current offerings</div>
+        <div class="bean-card" onclick="cGo('reveal')">
+          <div class="bean-top"><div class="bean-flag">🇺🇬</div><div style="flex:1"><div class="bean-name">Great Lakes Washed</div><div class="bean-origin">Kampala, Uganda</div></div><div class="score-pill">86.2</div></div>
+          <div class="flavor-bars">
+            <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:78%"></div></div></div>
+            <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:62%"></div></div></div>
+            <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:85%"></div></div></div>
+          </div>
+        </div>
+        <div class="bean-card">
+          <div class="bean-top"><div class="bean-flag">🇧🇷</div><div style="flex:1"><div class="bean-name">AFASA Natural</div><div class="bean-origin">Minas Gerais, Brazil</div></div><div class="score-pill">85.5</div></div>
+          <div class="flavor-bars">
+            <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:52%"></div></div></div>
+            <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:88%"></div></div></div>
+            <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:91%"></div></div></div>
+          </div>
+        </div>
+        <div class="sec-label">Stories from the farm</div>
+        <div class="story-card" onclick="cGo('story')">
+          <div class="story-img"><div style="font-size:24px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · Feb 2025</div></div>
+          <div class="story-body"><div class="story-title">How Amara tripled her yield in two seasons</div><div class="story-desc">After joining Farm2Cup, she switched bean varieties and adjusted her drying schedule.</div></div>
+        </div>
+        <div style="height:14px"></div>
       </div>
-
-      <div class="section-label">Current offerings</div>
-
-      <div class="bean-card" onclick="goTo('reveal')">
-        <div class="bean-top">
-          <div class="bean-flag">🇺🇬</div>
-          <div class="bean-info">
-            <div class="bean-name">Great Lakes Washed</div>
-            <div class="bean-origin">Kampala region, Uganda</div>
-          </div>
-          <div class="score-pill">86.2</div>
-        </div>
-        <div class="flavor-bars">
-          <div class="flavor-row">
-            <div class="flavor-label">Brightness</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:78%"></div></div>
-          </div>
-          <div class="flavor-row">
-            <div class="flavor-label">Body</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:62%"></div></div>
-          </div>
-          <div class="flavor-row">
-            <div class="flavor-label">Sweetness</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:85%"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="bean-card">
-        <div class="bean-top">
-          <div class="bean-flag">🇧🇷</div>
-          <div class="bean-info">
-            <div class="bean-name">AFASA Natural</div>
-            <div class="bean-origin">Minas Gerais, Brazil</div>
-          </div>
-          <div class="score-pill">85.5</div>
-        </div>
-        <div class="flavor-bars">
-          <div class="flavor-row">
-            <div class="flavor-label">Brightness</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:52%"></div></div>
-          </div>
-          <div class="flavor-row">
-            <div class="flavor-label">Body</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:88%"></div></div>
-          </div>
-          <div class="flavor-row">
-            <div class="flavor-label">Sweetness</div>
-            <div class="flavor-track"><div class="flavor-fill" style="width:91%"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-label">Stories from the farm</div>
-
-      <div class="story-card" onclick="goTo('story')">
-        <div class="story-img">
-          <div class="story-img-icon">☕</div>
-          <div class="story-img-caption">Kampala, Uganda · Feb 2025</div>
-        </div>
-        <div class="story-body">
-          <div class="story-title">How Amara tripled her yield in two seasons</div>
-          <div class="story-desc">After joining Farm2Cup, she switched bean varieties and adjusted her drying schedule — with measurable results.</div>
-        </div>
-      </div>
-
-      <div style="height:16px"></div>
+      <nav class="bottom-nav">
+        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab('home')">
-        <div class="nav-icon">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        </div>
-        <div class="nav-label">Discover</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('scan')">
-        <div class="nav-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg>
-        </div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('impact')">
-        <div class="nav-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 2: SCAN
-  ══════════════════════════════════ -->
-  <div id="screen-scan" class="screen">
-    <div class="scroll-body">
-      <div class="hero-bar">
-        <div class="back-row" onclick="goTo('home')">
-          <div class="back-btn">‹</div>
-          <div class="back-title">Scan your bag</div>
+    <!-- SCAN -->
+    <div id="c-scan" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Scan your bag</div></div></div>
+        <div class="scan-area"><div class="scan-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div style="font-size:13px;font-weight:600;color:var(--espresso)">Point camera at QR code</div><div style="font-size:11px;color:var(--slate)">Found on the bag label</div></div>
+        <div class="or-row"><div class="or-line"></div><div class="or-text">or enter batch code</div><div class="or-line"></div></div>
+        <input class="batch-input" type="text" value="UG-2025-0314">
+        <div class="primary-btn" onclick="cGo('reveal')">Find my coffee →</div>
+        <div class="sec-label" style="margin-top:8px">Recent scans</div>
+        <div class="card" style="margin:0 16px 12px">
+          <div class="recent-row" onclick="cGo('reveal')"><div class="rdot"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">Great Lakes Washed · Uganda</div><div style="font-size:11px;color:var(--tan)">Today</div></div>
+          <div class="recent-row"><div class="rdot" style="background:var(--tan)"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">AFASA Natural · Brazil</div><div style="font-size:11px;color:var(--tan)">3 days ago</div></div>
         </div>
       </div>
-
-      <div class="scan-area">
-        <div class="scan-icon-box">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg>
-        </div>
-        <div class="scan-hint">Point camera at QR code</div>
-        <div class="scan-sub">Found on the bag label</div>
-      </div>
-
-      <div class="or-row">
-        <div class="or-line"></div>
-        <div class="or-text">or enter batch code</div>
-        <div class="or-line"></div>
-      </div>
-
-      <input class="batch-input" id="batch-input" type="text" value="UG-2025-0314" placeholder="e.g. UG-2025-0314" />
-
-      <div class="primary-btn" onclick="goTo('reveal')">Find my coffee →</div>
-
-      <div class="section-label" style="margin-top:8px;">Recent scans</div>
-      <div class="card" style="margin:0 16px 12px;">
-        <div class="recent-row" onclick="goTo('reveal')">
-          <div class="recent-dot"></div>
-          <div class="recent-name">Great Lakes Washed · Uganda</div>
-          <div class="recent-date">Today</div>
-        </div>
-        <div class="recent-row">
-          <div class="recent-dot" style="background:var(--tan)"></div>
-          <div class="recent-name">AFASA Natural · Brazil</div>
-          <div class="recent-date">3 days ago</div>
-        </div>
-      </div>
-      <div style="height:16px"></div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item" onclick="switchTab('home')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div class="nav-label">Discover</div>
-      </div>
-      <div class="nav-item active" onclick="switchTab('scan')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('impact')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 3: FARMER REVEAL
-  ══════════════════════════════════ -->
-  <div id="screen-reveal" class="screen">
-    <div class="scroll-body">
-      <div class="hero-bar">
-        <div class="back-row" onclick="goTo('scan')">
-          <div class="back-btn">‹</div>
-          <div class="back-title">Meet the farmer</div>
-          <div class="back-tag">UG-2025-0314</div>
-        </div>
-      </div>
-
-      <div class="reveal-wrap">
-        <div class="farmer-avatar">👩🏾</div>
-        <div class="farmer-name">Amara Nakato</div>
-        <div class="farmer-loc">Kampala region, Uganda · Farm2Cup since 2022</div>
-
-        <div class="payment-box">
-          <div class="payment-title">✓ Payment confirmed — Bext360 blockchain record</div>
-          <div class="payment-val">Paid 3× commodity rate · March 14, 2025</div>
-        </div>
-
-        <div class="score-row">
-          <div class="score-num">86.2</div>
-          <div class="score-info">
-            <div class="score-label">Cupping score — Specialty Grade</div>
-            <div class="score-sub">80+ = Specialty · Amara's best harvest yet</div>
+    <!-- REVEAL -->
+    <div id="c-reveal" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('scan')"><div class="back-btn">‹</div><div class="back-title">Meet the farmer</div><div class="back-tag">UG-2025-0314</div></div></div>
+        <div class="reveal-wrap">
+          <div class="farmer-avatar">👩🏾</div>
+          <div class="farmer-name">Amara Nakato</div>
+          <div class="farmer-loc">Kampala, Uganda · Farm2Cup since 2022</div>
+          <div class="pay-box"><div class="pay-title">✓ Payment confirmed — Bext360 blockchain</div><div class="pay-val">Paid 3× commodity rate · March 14, 2025</div></div>
+          <div class="score-row"><div class="score-num">86.2</div><div><div class="score-lbl">Cupping score — Specialty Grade</div><div class="score-sub">80+ = Specialty · Her best harvest yet</div></div></div>
+          <div class="farmer-story">Amara has grown coffee on her 1.2 acres for over a decade. After joining Farm2Cup, she switched to Bourbon varieties and improved her drying process. Her score rose from 82 to 86+ in two seasons — and her income more than doubled.</div>
+          <div class="sup-bar">
+            <div class="sup-title">Send Amara your support</div>
+            <div class="sup-btns">
+              <div class="sup-btn" id="s-like" onclick="tapSup('s-like','❤️','1.2k')"><div class="sup-ico">❤️</div><div>1.2k</div></div>
+              <div class="sup-btn" id="s-msg" onclick="tapSup('s-msg','💬','Sent!')"><div class="sup-ico">💬</div><div>Message</div></div>
+              <div class="sup-btn" id="s-follow" onclick="tapSup('s-follow','🌱','Following')"><div class="sup-ico">🌱</div><div>Follow</div></div>
+              <div class="sup-btn" id="s-share" onclick="tapSup('s-share','🔗','Copied!')"><div class="sup-ico">🔗</div><div>Share</div></div>
+            </div>
           </div>
+          <div class="moat-badge"><span class="moat-strong">This is not a marketing claim.</span> Machine-verified Bext360 blockchain record — cannot be altered.</div>
+          <div class="outline-btn" onclick="cGo('journey')">See full bean journey →</div>
+          <div style="height:8px"></div>
         </div>
-
-        <div class="farmer-story">
-          Amara has grown coffee on her family's 1.2 acres for over a decade. After joining Farm2Cup, she switched to Bourbon varieties and improved her raised-bed drying from 12 to 18 days. Her score rose from 82 to 86+ in two seasons — and her income more than doubled.
-        </div>
-
-        <div class="moat-badge">
-          <span class="moat-strong">This is not a marketing claim.</span> This payment is a machine-verified, immutable blockchain record from Bext360 — it cannot be altered.
-        </div>
-
-        <div class="outline-btn" onclick="goTo('journey')">See full bean journey →</div>
-
-        <div style="height:8px"></div>
       </div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item" onclick="switchTab('home')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div class="nav-label">Discover</div>
+    <!-- JOURNEY -->
+    <div id="c-journey" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('reveal')"><div class="back-btn">‹</div><div class="back-title">Bean journey</div><div class="back-tag">Great Lakes Washed</div></div></div>
+        <div class="batch-meta">Batch <span>UG-2025-0314</span> · <span>Blockchain verified</span></div>
+        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">🌱</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Harvested</div><div class="step-detail">Amara Nakato · 1.2 acres · 1,650m · Bourbon variety</div><div class="step-time">March 14, 2025</div><div class="step-ok">✓ Bext360 verified · 86.2</div></div></div>
+        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">💧</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Washed &amp; dried</div><div class="step-detail">Great Lakes Coffee · Kampala · 72hr ferment · 18-day dry</div><div class="step-time">March 18–25, 2025</div><div class="step-ok">✓ Blockchain record</div></div></div>
+        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">📦</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Milled &amp; exported</div><div class="step-detail">Entebbe → Denver, CO · GrainPro sealed</div><div class="step-time">April 2, 2025</div><div class="step-ok">✓ Shipping record</div></div></div>
+        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico inprogress">🔥</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Roasted in Denver</div><div class="step-detail">Coda HQ · Tim Thwaites · Medium roast</div><div class="step-time">April 19, 2025</div><div class="step-prog">In progress</div></div></div>
+        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico pending">☕</div></div><div class="step-body" style="opacity:.4"><div class="step-title">In your cup</div><div class="step-detail">Coda retail store · Denver, CO</div></div></div>
+        <div class="pay-summary"><div style="font-size:11px;color:var(--tan);margin-bottom:2px">Farmer payment</div><div style="font-size:14px;font-weight:700;color:var(--espresso)">3× commodity rate paid</div><div style="font-size:10px;color:var(--sage);margin-top:2px">Instant · Bext360 receipt · March 14, 2025</div></div>
+        <div class="primary-btn" style="margin-top:8px" onclick="cGo('impact')">See your impact →</div>
+        <div style="height:16px"></div>
       </div>
-      <div class="nav-item active" onclick="switchTab('scan')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('impact')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 4: BEAN JOURNEY
-  ══════════════════════════════════ -->
-  <div id="screen-journey" class="screen">
-    <div class="scroll-body">
-      <div class="hero-bar">
-        <div class="back-row" onclick="goTo('reveal')">
-          <div class="back-btn">‹</div>
-          <div class="back-title">Bean journey</div>
-          <div class="back-tag">Great Lakes Washed</div>
-        </div>
-      </div>
-
-      <div class="batch-meta">Batch <span>UG-2025-0314</span> · <span>Blockchain verified</span> · 5 of 5 steps tracked</div>
-
-      <div class="chain-step">
-        <div class="step-icon-wrap">
-          <div class="step-icon done">🌱</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Harvested</div>
-          <div class="step-detail">Amara Nakato's farm · 1.2 acres · Elevation 1,650m<br>Bourbon variety · Hand-picked, ripe cherries only</div>
-          <div class="step-time">March 14, 2025</div>
-          <div class="step-verified">✓ Bext360 verified · Score 86.2</div>
-        </div>
-      </div>
-
-      <div class="chain-step">
-        <div class="step-icon-wrap">
-          <div class="step-icon done">💧</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Washed &amp; dried</div>
-          <div class="step-detail">Great Lakes Coffee · Kampala<br>72hr fermentation · 18-day raised-bed dry</div>
-          <div class="step-time">March 18–25, 2025</div>
-          <div class="step-verified">✓ Blockchain record confirmed</div>
-        </div>
-      </div>
-
-      <div class="chain-step">
-        <div class="step-icon-wrap">
-          <div class="step-icon done">📦</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Milled &amp; exported</div>
-          <div class="step-detail">Entebbe port → Denver, CO<br>GrainPro moisture-sealed bags · 20kg lots</div>
-          <div class="step-time">April 2, 2025</div>
-          <div class="step-verified">✓ Shipping record on-chain</div>
-        </div>
-      </div>
-
-      <div class="chain-step">
-        <div class="step-icon-wrap">
-          <div class="step-icon active">🔥</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-title">Roasted in Denver</div>
-          <div class="step-detail">Coda HQ · Roastmaster: Tim Thwaites<br>Medium roast · Batch RD-0419-25</div>
-          <div class="step-time">April 19, 2025</div>
-          <div class="step-progress">In progress</div>
-        </div>
-      </div>
-
-      <div class="chain-step">
-        <div class="step-icon-wrap">
-          <div class="step-icon pending">☕</div>
-        </div>
-        <div class="step-body" style="opacity:0.4">
-          <div class="step-title">In your cup</div>
-          <div class="step-detail">Coda retail store · Denver, CO</div>
-          <div class="step-time">Coming soon</div>
-        </div>
-      </div>
-
-      <div class="payment-summary">
-        <div class="ps-label">Farmer payment</div>
-        <div class="ps-val">3× commodity rate paid</div>
-        <div class="ps-sub">Instant via Bext360 receipt · March 14, 2025 · Immutable blockchain record</div>
-      </div>
-
-      <div class="primary-btn" style="margin-top:8px;" onclick="goTo('impact')">See your impact →</div>
-      <div style="height:16px"></div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item" onclick="switchTab('home')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div class="nav-label">Discover</div>
+    <!-- IMPACT -->
+    <div id="c-impact" class="screen">
+      <div class="scroll-body">
+        <div class="impact-hero consumer"><div style="font-size:17px;font-weight:700;color:#fff">Your impact</div><div style="font-size:11px;color:var(--latte-lt);margin-top:3px">Every purchase adds up</div></div>
+        <div class="sec-label">Your footprint</div>
+        <div class="stat-grid">
+          <div class="stat-tile"><div class="stat-num">4</div><div class="stat-lbl">Bags purchased</div></div>
+          <div class="stat-tile"><div class="stat-num">2</div><div class="stat-lbl">Farmers supported</div></div>
+          <div class="stat-tile"><div class="stat-num">3×</div><div class="stat-lbl">Avg. premium paid</div></div>
+          <div class="stat-tile"><div class="stat-num" style="font-size:14px;line-height:1.3">Uganda<br>Brazil</div><div class="stat-lbl">Origins</div></div>
+        </div>
+        <div class="sec-label">Your badges</div>
+        <div class="badge-grid">
+          <div class="badge-tile earned"><div class="badge-ico">🇺🇬</div><div class="badge-name">Uganda Explorer</div><div class="badge-status earned">Earned</div></div>
+          <div class="badge-tile earned"><div class="badge-ico">❤️</div><div class="badge-name">First Support</div><div class="badge-status earned">Earned</div></div>
+          <div class="badge-tile"><div class="badge-ico">🌍</div><div class="badge-name">Globe Trotter</div><div class="badge-status">3 origins needed</div></div>
+          <div class="badge-tile"><div class="badge-ico">🏅</div><div class="badge-name">Campaign Hero</div><div class="badge-status">Join a campaign</div></div>
+          <div class="badge-tile earned"><div class="badge-ico">🇧🇷</div><div class="badge-name">Brazil Explorer</div><div class="badge-status earned">Earned</div></div>
+          <div class="badge-tile"><div class="badge-ico">⭐</div><div class="badge-name">Loyal Sipper</div><div class="badge-status">10 bags needed</div></div>
+        </div>
+        <div class="sec-label">Farmers you've supported</div>
+        <div class="card" style="margin:0 16px 10px">
+          <div class="chip" onclick="cGo('reveal')"><div class="chip-ava">👩🏾</div><div><div class="chip-name">Amara Nakato</div><div class="chip-detail">Uganda · 2 bags · Following</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
+          <div class="chip"><div class="chip-ava">👨🏽</div><div><div class="chip-name">Carlos Mendes</div><div class="chip-detail">Brazil · 2 bags</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
+        </div>
+        <div class="share-cta" onclick="cToast('Link copied! Share your impact.')"><div style="font-size:22px">🌱</div><div><div style="font-size:13px;font-weight:600;color:var(--sage)">Share your impact</div><div style="font-size:11px;color:#3B6D11;margin-top:1px">Let others know where their coffee comes from</div></div></div>
+        <div style="height:14px"></div>
       </div>
-      <div class="nav-item active" onclick="switchTab('scan')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('impact')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 5: IMPACT
-  ══════════════════════════════════ -->
-  <div id="screen-impact" class="screen">
-    <div class="scroll-body">
-      <div class="impact-hero">
-        <div class="impact-hero-title">Your impact</div>
-        <div class="impact-hero-sub">Every purchase adds up</div>
-      </div>
-
-      <div class="section-label">Your footprint</div>
-      <div class="stat-grid">
-        <div class="stat-tile">
-          <div class="stat-num">4</div>
-          <div class="stat-label">Bags purchased</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num">2</div>
-          <div class="stat-label">Farmers supported</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num">3×</div>
-          <div class="stat-label">Avg. premium paid</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num" style="font-size:16px;line-height:1.3;">Uganda<br>Brazil</div>
-          <div class="stat-label">Origins</div>
-        </div>
-      </div>
-
-      <div class="section-label" style="margin-top:4px;">Coda community</div>
-      <div class="stat-grid">
-        <div class="stat-tile">
-          <div class="stat-num">247</div>
-          <div class="stat-label">Farm2Cup farmers</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num">$1.2M</div>
-          <div class="stat-label">Premiums paid out</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num">18</div>
-          <div class="stat-label">Co-ops partnered</div>
-        </div>
-        <div class="stat-tile">
-          <div class="stat-num" style="font-size:15px;">B Corp</div>
-          <div class="stat-label">Certified since 2013</div>
-        </div>
-      </div>
-
-      <div class="section-label" style="margin-top:4px;">Farmers you've supported</div>
-      <div class="card" style="margin:0 16px 12px;">
-        <div class="farmer-chip" onclick="goTo('reveal')">
-          <div class="chip-avatar">👩🏾</div>
-          <div class="chip-info">
-            <div class="chip-name">Amara Nakato</div>
-            <div class="chip-detail">Uganda · 2 bags from her farm</div>
-          </div>
-          <div class="chip-arrow">›</div>
-        </div>
-        <div class="farmer-chip">
-          <div class="chip-avatar">👨🏽</div>
-          <div class="chip-info">
-            <div class="chip-name">Carlos Mendes</div>
-            <div class="chip-detail">Brazil · 2 bags from his farm</div>
-          </div>
-          <div class="chip-arrow">›</div>
-        </div>
-      </div>
-
-      <div class="share-cta" onclick="showToast('Link copied! Share your impact with friends.')">
-        <div class="share-icon">🌱</div>
-        <div class="share-text">
-          <div class="share-title">Share your impact</div>
-          <div class="share-sub">Let others know where their coffee comes from</div>
-        </div>
-      </div>
-
-      <div style="height:16px"></div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item active" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item" onclick="switchTab('home')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div class="nav-label">Discover</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('scan')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item active" onclick="switchTab('impact')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 6: STORY (article)
-  ══════════════════════════════════ -->
-  <div id="screen-story" class="screen">
-    <div class="scroll-body">
-      <div class="hero-bar">
-        <div class="back-row" onclick="goTo('home')">
-          <div class="back-btn">‹</div>
-          <div class="back-title">Farm story</div>
-        </div>
-      </div>
-
-      <div class="story-img" style="height:150px;margin:0;">
-        <div class="story-img-icon" style="font-size:40px;">☕</div>
-        <div class="story-img-caption">Kampala, Uganda · February 2025</div>
-      </div>
-
-      <div style="padding:18px 20px;">
-        <div style="font-size:19px;font-weight:700;color:var(--espresso);line-height:1.3;margin-bottom:14px;">
-          How Amara tripled her yield in two seasons
-        </div>
-
-        <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:12px;">
-          When Amara Nakato first heard about Coda's Farm2Cup program, she was skeptical. She had been growing coffee the same way for ten years. Why change?
-        </div>
-        <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:12px;">
-          The answer came from the bextmachine at her cooperative. For the first time, she could see a score for her own coffee — not a vague "good" from a middleman, but an actual number: 82.4. And she could see that her neighbor's beans scored 85.1.
-        </div>
-        <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:16px;">
-          That number changed everything. With guidance from Coda's agronomist partners, she switched to Bourbon variety seedlings and adjusted her raised-bed drying from 12 to 18 days. By the next harvest, her score was 86.2 — and her income had more than doubled.
-        </div>
-
-        <div style="background:var(--sand);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:16px;">
-          <div style="font-size:13px;color:var(--slate);line-height:1.6;font-style:italic;">
-            "The machine doesn't lie. It just tells you the number. And once you know the number, you know what to fix."
-          </div>
-          <div style="font-size:12px;font-weight:600;color:var(--latte);margin-top:8px;">
-            — Amara Nakato, Farm2Cup farmer since 2022
+    <!-- CAMPAIGNS -->
+    <div id="c-campaigns" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Campaigns</div></div></div>
+        <div class="sec-label">Active now</div>
+        <div class="camp-card">
+          <div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div>
+          <div class="camp-body">
+            <div class="camp-title">Uganda Great Lakes — March harvest</div>
+            <div class="camp-desc">Help Amara reach her 2025 quality upgrade goal. Every follower unlocks Coda's matching premium for Amara's next batch.</div>
+            <div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val" id="cp-val2">847 / 1,000</div></div>
+            <div class="cp-track"><div class="cp-fill" id="cp-bar2" style="width:84.7%"></div></div>
+            <button class="camp-btn" onclick="joinCamp(this,'c2')">Join this campaign</button>
           </div>
         </div>
-
-        <div class="primary-btn" style="margin:0 0 8px;" onclick="goTo('reveal')">Meet Amara →</div>
+        <div class="camp-card" style="border-color:var(--sage)">
+          <div class="camp-head" style="background:var(--sage)"><span style="font-size:14px">🌱</span><div class="camp-lbl">Follow this farm</div></div>
+          <div class="camp-body">
+            <div class="camp-title">Carlos Mendes — Brazil AFASA</div>
+            <div class="camp-desc">Carlos is experimenting with new drying methods. Follow his farm to get harvest updates directly in your feed.</div>
+            <div class="cp-row"><div class="cp-lbl">Followers</div><div class="cp-val" style="color:var(--sage)">312 / 500</div></div>
+            <div class="cp-track"><div class="cp-fill" style="width:62.4%;background:var(--sage)"></div></div>
+            <button class="camp-btn" style="background:var(--sage)" onclick="cToast('You are now following Carlos\'s farm! 🌱')">Follow Carlos's farm</button>
+          </div>
+        </div>
+        <div style="height:14px"></div>
       </div>
+      <nav class="bottom-nav">
+        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
     </div>
 
-    <nav class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab('home')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
-        <div class="nav-label">Discover</div>
+    <!-- STORY -->
+    <div id="c-story" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Farm story</div></div></div>
+        <div class="story-img" style="height:130px;margin:0"><div style="font-size:36px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · February 2025</div></div>
+        <div style="padding:16px 20px">
+          <div style="font-size:18px;font-weight:700;color:var(--espresso);line-height:1.3;margin-bottom:12px">How Amara tripled her yield in two seasons</div>
+          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px">When Amara Nakato first heard about Coda's Farm2Cup program, she was skeptical. She had been growing coffee the same way for ten years.</div>
+          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px">The answer came from the bextmachine at her cooperative. For the first time, she could see a score: 82.4. And she could see that her neighbor's beans scored 85.1.</div>
+          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:14px">She switched to Bourbon variety seedlings and adjusted her drying from 12 to 18 days. By the next harvest, her score was 86.2 — and her income had more than doubled.</div>
+          <div style="background:var(--sand);border-radius:var(--r-md);padding:12px 14px;margin-bottom:14px"><div style="font-size:12px;color:var(--slate);line-height:1.6;font-style:italic">"The machine doesn't lie. It just tells you the number."</div><div style="font-size:11px;font-weight:600;color:var(--latte);margin-top:6px">— Amara Nakato</div></div>
+          <div class="primary-btn" style="margin:0 0 8px" onclick="cGo('reveal')">Meet Amara →</div>
+        </div>
       </div>
-      <div class="nav-item" onclick="switchTab('scan')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-        <div class="nav-label">Trace</div>
-      </div>
-      <div class="nav-item" onclick="switchTab('impact')">
-        <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="nav-label">Impact</div>
-      </div>
-    </nav>
-  </div>
+      <nav class="bottom-nav">
+        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
+    </div>
 
-  <!-- toast notification -->
-  <div class="toast" id="toast"></div>
+    <div class="toast" id="c-toast"></div>
+  </div>
+</div>
+
+<!-- ══ FARMER EDITION ════════════════════════════════════ -->
+<div class="device-wrap">
+  <div class="device" id="dev-farmer" style="display:none">
+    <div class="status-bar farmer"><span class="status-time">9:41</span><span>Coda Farmer</span><span>●●●</span></div>
+
+    <!-- FARMER HOME -->
+    <div id="f-home" class="screen active">
+      <div class="scroll-body">
+        <div class="hero-bar farmer">
+          <div class="eyebrow f">Farmer Edition</div>
+          <div class="hero-title">Welcome back,<br>Amara 👩🏾</div>
+          <div class="hero-sub f">Your farm · Kampala, Uganda</div>
+          <div class="f-cta" onclick="fGo('upload')">
+            <div class="f-cta-ico">📸</div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Post a farm update</div><div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Share photos or harvest news</div></div>
+            <div style="font-size:20px;color:rgba(255,255,255,.6)">›</div>
+          </div>
+        </div>
+        <div class="sec-label">Your latest stats</div>
+        <div class="stat-grid">
+          <div class="stat-tile"><div class="stat-num sage">86.2</div><div class="stat-lbl">Latest cupping score</div></div>
+          <div class="stat-tile"><div class="stat-num sage">1.2k</div><div class="stat-lbl">Consumer supporters</div></div>
+          <div class="stat-tile"><div class="stat-num sage">3×</div><div class="stat-lbl">Premium received</div></div>
+          <div class="stat-tile"><div class="stat-num sage">#4</div><div class="stat-lbl">Co-op ranking this season</div></div>
+        </div>
+        <div class="sec-label">Your latest update</div>
+        <div class="update-card">
+          <div class="update-head"><div class="update-ava">👩🏾</div><div><div style="font-size:12px;font-weight:600;color:var(--espresso)">Amara Nakato</div><div style="font-size:10px;color:var(--tan);margin-top:1px">2 days ago</div></div></div>
+          <div class="update-img">🫘</div>
+          <div class="update-body">
+            <div class="update-text">First cherries of the March harvest are looking great! The new Bourbon seedlings have really made a difference. Hoping to beat last season's score.</div>
+            <div class="reactions">
+              <div class="reaction active">❤️ 847</div>
+              <div class="reaction">💬 23</div>
+              <div class="reaction" onclick="fToast('Shared with your followers!')">🔗 Share</div>
+            </div>
+          </div>
+        </div>
+        <div class="sec-label">Community signals from consumers</div>
+        <div class="card" style="margin:0 16px 12px">
+          <div class="signal-item"><div class="signal-ico">❤️</div><div class="signal-text"><strong>Sarah K.</strong> sent you a thank-you note: "Your coffee is my morning ritual!"</div><div class="signal-time">1h ago</div></div>
+          <div class="signal-item"><div class="signal-ico">🌱</div><div class="signal-text"><strong>Mike T.</strong> started following your farm</div><div class="signal-time">3h ago</div></div>
+          <div class="signal-item"><div class="signal-ico">🗳️</div><div class="signal-text"><strong>847 consumers</strong> joined your "Support this harvest" campaign</div><div class="signal-time">Today</div></div>
+          <div class="signal-item"><div class="signal-ico">⭐</div><div class="signal-text"><strong>Coda update:</strong> Your beans were featured in the consumer Discover page this week</div><div class="signal-time">Yesterday</div></div>
+        </div>
+        <div style="height:14px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <div class="nav-item active fnav" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
+        <div class="nav-item" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
+        <div class="nav-item" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
+      </nav>
+    </div>
+
+    <!-- FARMER UPLOAD -->
+    <div id="f-upload" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar farmer"><div class="back-row" onclick="fGo('home')"><div class="back-btn f">‹</div><div class="back-title">Post update</div></div></div>
+        <div class="sec-label">Share with your community</div>
+        <div class="upload-btn" onclick="fToast('📸 Camera opened — take a photo of your farm!')"><div class="upload-ico">📸</div><div><div class="upload-title">Add photo or video</div><div class="upload-sub">Show your harvest progress</div></div></div>
+        <div class="upload-btn" onclick="fToast('📊 Quality data attached from last Bext360 scan')"><div class="upload-ico">📊</div><div><div class="upload-title">Attach quality data</div><div class="upload-sub">Share your latest cupping score</div></div></div>
+        <div class="upload-btn" onclick="fToast('💬 Challenge posted — Coda team will respond shortly')"><div class="upload-ico">💬</div><div><div class="upload-title">Share a challenge</div><div class="upload-sub">Ask for advice or report a problem</div></div></div>
+        <div style="margin:0 20px"><textarea style="width:100%;min-height:90px;background:var(--sand);border:none;border-radius:var(--r-sm);padding:10px 12px;font-size:13px;color:var(--slate);resize:none;outline:none;font-family:inherit" placeholder="Write an update for your followers..."></textarea></div>
+        <div class="primary-btn sage" style="margin-top:10px" onclick="fToast('✓ Update posted! 1.2k followers will see this.')">Post update</div>
+        <div style="height:16px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
+        <div class="nav-item active fnav" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
+        <div class="nav-item" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
+      </nav>
+    </div>
+
+    <!-- FARMER LEARN -->
+    <div id="f-learn" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar farmer"><div class="back-row" onclick="fGo('home')"><div class="back-btn f">‹</div><div class="back-title">Learn</div></div></div>
+        <div class="sec-label">Your quality feedback</div>
+        <div class="card" style="margin:0 16px 12px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--sage);margin-bottom:6px">Coda quality feedback — March 2025</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Your score of 86.2 is excellent. To reach 87+, consider reducing fermentation from 72hr to 60hr and testing sorting by density before milling.</div></div>
+        <div class="sec-label">Educational content</div>
+        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">🌱</div><div><div class="edu-title">Improving bean density sorting</div><div class="edu-sub">5 min read · Intermediate</div></div></div>
+        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">💧</div><div><div class="edu-title">Optimizing fermentation time</div><div class="edu-sub">4 min read · Advanced</div></div></div>
+        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">☀️</div><div><div class="edu-title">Raised-bed drying best practices</div><div class="edu-sub">6 min read · Beginner</div></div></div>
+        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">🌍</div><div><div class="edu-title">Sustainable farming &amp; B Corp standards</div><div class="edu-sub">8 min read · All levels</div></div></div>
+        <div class="sec-label">Market updates from Coda</div>
+        <div class="card" style="margin:0 16px 12px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--latte);margin-bottom:4px">April 2025 market update</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Specialty coffee demand is up 12% in Colorado this quarter. Scores of 86+ are getting 3.2× premium. Your current score qualifies. Maintain your practices.</div></div>
+        <div style="height:14px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
+        <div class="nav-item" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
+        <div class="nav-item active fnav" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
+      </nav>
+    </div>
+
+    <div class="toast" id="f-toast" style="background:var(--sage)"></div>
+  </div>
 </div>
 
 <script>
-  // ── navigation ──────────────────────────────────────────
-  const SCREENS = ['home','scan','reveal','journey','impact','story'];
-
-  function goTo(id) {
-    SCREENS.forEach(s => {
-      const el = document.getElementById('screen-' + s);
-      if (el) el.classList.toggle('active', s === id);
-    });
-    // scroll to top
-    const active = document.getElementById('screen-' + id);
-    if (active) {
-      const body = active.querySelector('.scroll-body');
-      if (body) body.scrollTop = 0;
-    }
-  }
-
-  function switchTab(id) {
-    // home → home screen, scan → scan screen, impact → impact screen
-    if (id === 'home') goTo('home');
-    else if (id === 'scan') goTo('scan');
-    else if (id === 'impact') goTo('impact');
-  }
-
-  // ── toast ────────────────────────────────────────────────
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  // ── keyboard shortcut for demo (1-6 keys) ───────────────
-  document.addEventListener('keydown', e => {
-    const map = {'1':'home','2':'scan','3':'reveal','4':'journey','5':'impact','6':'story'};
-    if (map[e.key]) goTo(map[e.key]);
-  });
+let curEd='consumer';
+function setEd(ed){
+  curEd=ed;
+  document.getElementById('dev-consumer').style.display=ed==='consumer'?'block':'none';
+  document.getElementById('dev-farmer').style.display=ed==='farmer'?'block':'none';
+  document.querySelectorAll('.ed-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.ed-btn').forEach(b=>{if((ed==='consumer'&&b.textContent.includes('Consumer'))||(ed==='farmer'&&b.textContent.includes('Farmer')))b.classList.add('active');});
+}
+const CS=['home','scan','reveal','journey','impact','campaigns','story'];
+function cGo(id){CS.forEach(s=>{const el=document.getElementById('c-'+s);if(el){el.classList.toggle('active',s===id);if(s===id){const b=el.querySelector('.scroll-body');if(b)b.scrollTop=0;}}});}
+function cTab(id){cGo(id);}
+const FS=['home','upload','learn'];
+function fGo(id){FS.forEach(s=>{const el=document.getElementById('f-'+s);if(el){el.classList.toggle('active',s===id);if(s===id){const b=el.querySelector('.scroll-body');if(b)b.scrollTop=0;}}});}
+function fTab(id){fGo(id);}
+function doToast(id,msg){const t=document.getElementById(id);t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function cToast(msg){doToast('c-toast',msg);}
+function fToast(msg){doToast('f-toast',msg);}
+function tapSup(id,ico,lbl){
+  const el=document.getElementById(id);
+  if(el.classList.contains('active')){el.classList.remove('active');return;}
+  el.classList.add('active');
+  el.querySelector('div:last-child').textContent=lbl;
+  const msgs={'s-like':'❤️ You liked Amara\'s farm!','s-follow':'🌱 You are now following Amara\'s farm!','s-share':'🔗 Link copied!','s-msg':'💬 Message sent to Amara!'};
+  cToast(msgs[id]||'Done!');
+}
+function joinCamp(btn,key){
+  btn.textContent='✓ Joined! Thank you';btn.style.background='var(--sage)';
+  if(key==='c2'){const b=document.getElementById('cp-bar2');const v=document.getElementById('cp-val2');if(b)b.style.width='85.7%';if(v)v.textContent='857 / 1,000';}
+  cToast('🫘 You joined the campaign! Amara will see your support.');
+}
+document.addEventListener('keydown',e=>{
+  if(curEd==='consumer'){const m={'1':'home','2':'scan','3':'reveal','4':'journey','5':'impact','6':'campaigns','7':'story'};if(m[e.key])cGo(m[e.key]);}
+  else{const m={'1':'home','2':'upload','3':'learn'};if(m[e.key])fGo(m[e.key]);}
+  if(e.key==='f')setEd('farmer');
+  if(e.key==='c')setEd('consumer');
+});
 </script>
 </body>
 </html>
