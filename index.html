@@ -13,41 +13,50 @@
   --amber:#BA7517;--amber-lt:#FAEEDA;
   --slate:#4A5568;--white:#FFFFFF;
   --r-sm:8px;--r-md:12px;--r-lg:20px;
+  --sidebar-w:0px;
 }
-html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:24px;}
-.edition-toggle{position:absolute;top:-48px;left:50%;transform:translateX(-50%);display:flex;background:#222;border-radius:20px;padding:3px;gap:3px;white-space:nowrap;}
-.ed-btn{padding:6px 18px;border-radius:16px;border:none;cursor:pointer;font-size:12px;font-weight:600;color:#888;background:transparent;transition:all 0.2s;}
-.ed-btn.active{background:var(--latte);color:#fff;}
-.ed-btn.farmer.active{background:var(--sage);}
-.device-wrap{position:relative;flex-shrink:0;}
-.device{width:375px;min-height:812px;background:var(--cream);border-radius:48px;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 0 2px #333;}
-.status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:background .3s;}
-.status-bar.consumer{background:var(--espresso);}
-.status-bar.farmer{background:var(--sage);}
-.status-bar span{color:#fff;font-size:12px;font-weight:600;}
-.status-time{font-size:15px!important;}
-.screen{display:none;flex-direction:column;height:calc(812px - 44px);}
-.screen.active{display:flex;}
-.scroll-body{flex:1;overflow-y:auto;}
-.scroll-body::-webkit-scrollbar{display:none;}
-*{scrollbar-width:none;}
-/* nav */
-.bottom-nav{display:flex;background:var(--white);border-top:1px solid var(--sand);padding:8px 0 20px;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;}
+html{height:100%;}
+body{min-height:100%;background:var(--cream);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--slate);}
+
+/* ═══ APP SHELL ═══ */
+.app-shell{display:flex;min-height:100vh;}
+
+/* ═══ SIDEBAR — hidden on mobile ═══ */
+.sidebar{display:none;}
+
+/* ═══ MAIN ═══ */
+.main{flex:1;display:flex;flex-direction:column;min-height:100vh;margin-left:var(--sidebar-w);}
+
+/* ═══ BOTTOM NAV — mobile only ═══ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--white);border-top:1px solid var(--sand);padding:6px 0 env(safe-area-inset-bottom,14px);z-index:100;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;transition:opacity .12s;-webkit-tap-highlight-color:transparent;}
+.nav-item:active{opacity:.6;}
 .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;}
-.nav-icon svg{width:22px;height:22px;stroke:var(--tan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav-icon svg{width:22px;height:22px;stroke:var(--tan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s;}
 .nav-item.active .nav-icon svg{stroke:var(--latte);}
-.nav-item.active.fnav .nav-icon svg{stroke:var(--sage);}
-.nav-label{font-size:10px;color:var(--tan);font-weight:500;}
+.nav-item.farmer-active .nav-icon svg{stroke:var(--sage);}
+.nav-label{font-size:10px;color:var(--tan);font-weight:500;transition:color .15s;}
 .nav-item.active .nav-label{color:var(--latte);}
-.nav-item.active.fnav .nav-label{color:var(--sage);}
-/* shared */
-.hero-bar{padding:16px 20px 14px;transition:background .3s;}
+.nav-item.farmer-active .nav-label{color:var(--sage);}
+
+/* ═══ SCREENS ═══ */
+.screen{display:none;flex-direction:column;flex:1;}
+.screen.active{display:flex;}
+.scroll-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:72px;}
+.scroll-body::-webkit-scrollbar{width:6px;}
+.scroll-body::-webkit-scrollbar-track{background:transparent;}
+.scroll-body::-webkit-scrollbar-thumb{background:var(--sand);border-radius:3px;}
+
+/* ═══ INNER CONTAINER — constrains width on desktop ═══ */
+.inner{max-width:100%;margin:0 auto;width:100%;}
+
+/* ═══ SHARED COMPONENTS ═══ */
+.hero-bar{padding:20px 20px 16px;transition:background .3s;}
 .hero-bar.consumer{background:var(--espresso);}
 .hero-bar.farmer{background:var(--sage);}
 .eyebrow{font-size:10px;color:var(--latte-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
 .eyebrow.f{color:rgba(255,255,255,.6);}
-.hero-title{font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
+.hero-title{font-size:22px;font-weight:700;color:#fff;line-height:1.2;}
 .hero-sub{font-size:12px;color:var(--latte-lt);margin-top:4px;}
 .hero-sub.f{color:rgba(255,255,255,.65);}
 .back-row{display:flex;align-items:center;gap:8px;cursor:pointer;}
@@ -55,10 +64,24 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .back-btn.f{color:rgba(255,255,255,.7);}
 .back-title{font-size:15px;font-weight:600;color:#fff;}
 .back-tag{margin-left:auto;font-size:10px;color:var(--latte-lt);}
-.sec-label{font-size:10px;font-weight:700;color:var(--tan);text-transform:uppercase;letter-spacing:.08em;padding:14px 20px 8px;}
+.sec-label{font-size:10px;font-weight:700;color:var(--tan);text-transform:uppercase;letter-spacing:.08em;padding:16px 20px 8px;}
 .card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 12px;overflow:hidden;}
-/* bean card */
-.bean-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:14px 14px 12px;cursor:pointer;}
+
+/* Edition toggle */
+.edition-toggle{display:flex;background:rgba(0,0,0,.06);border-radius:20px;padding:3px;gap:3px;margin:12px 16px 0;}
+.ed-btn{flex:1;padding:7px 12px;border-radius:16px;border:none;cursor:pointer;font-size:12px;font-weight:600;color:var(--tan);background:transparent;transition:all .2s;text-align:center;}
+.ed-btn.active{background:var(--latte);color:#fff;}
+.ed-btn.farmer.active{background:var(--sage);}
+
+/* QR CTA */
+.qr-cta{margin:14px 16px 0;background:rgba(255,255,255,.1);border:1px solid rgba(215,169,122,.35);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .15s;}
+.qr-cta:hover{background:rgba(255,255,255,.18);}
+.qr-box{width:40px;height:40px;background:var(--latte-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qr-box svg{width:22px;height:22px;stroke:var(--espresso);fill:none;stroke-width:2;}
+
+/* Bean cards */
+.bean-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:14px;cursor:pointer;transition:box-shadow .15s,transform .1s;}
+.bean-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-1px);}
 .bean-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .bean-flag{width:34px;height:34px;border-radius:50%;background:var(--sand);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .bean-name{font-size:14px;font-weight:600;color:var(--espresso);}
@@ -69,45 +92,48 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .flavor-lbl{font-size:10px;color:var(--tan);width:56px;flex-shrink:0;}
 .flavor-track{flex:1;height:4px;background:var(--sand);border-radius:4px;}
 .flavor-fill{height:4px;background:var(--latte);border-radius:4px;}
-/* campaign */
-.camp-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
+
+/* Campaign */
+.camp-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
+.camp-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
 .camp-head{background:var(--latte);padding:8px 14px;display:flex;align-items:center;gap:8px;}
 .camp-lbl{font-size:11px;font-weight:700;color:#fff;letter-spacing:.05em;text-transform:uppercase;}
 .camp-body{padding:10px 14px 12px;}
 .camp-title{font-size:13px;font-weight:700;color:var(--espresso);}
-.camp-desc{font-size:11px;color:var(--slate);margin-top:3px;}
+.camp-desc{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
 .cp-row{display:flex;justify-content:space-between;margin-bottom:4px;margin-top:8px;}
 .cp-lbl{font-size:10px;color:var(--tan);}
 .cp-val{font-size:10px;font-weight:700;color:var(--latte);}
 .cp-track{width:100%;height:6px;background:var(--sand);border-radius:4px;}
 .cp-fill{height:6px;background:var(--latte);border-radius:4px;transition:width .4s;}
-.camp-btn{display:block;width:100%;margin-top:10px;background:var(--latte);color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;}
-.camp-btn:active{opacity:.85;}
-/* story card */
-.story-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
-.story-img{height:82px;background:linear-gradient(135deg,var(--latte) 0%,var(--espresso) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
-.story-body{padding:9px 14px 11px;}
+.camp-btn{display:block;width:100%;margin-top:10px;background:var(--latte);color:#fff;border:none;border-radius:var(--r-sm);padding:9px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:opacity .12s;}
+.camp-btn:hover{opacity:.9;}
+
+/* Story */
+.story-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
+.story-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.story-img{height:90px;background:linear-gradient(135deg,var(--latte) 0%,var(--espresso) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.story-body{padding:10px 14px 12px;}
 .story-title{font-size:13px;font-weight:600;color:var(--espresso);line-height:1.35;}
 .story-desc{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
-/* qr cta */
-.qr-cta{margin:14px 16px 0;background:rgba(255,255,255,.1);border:1px solid rgba(215,169,122,.35);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
-.qr-box{width:40px;height:40px;background:var(--latte-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.qr-box svg{width:22px;height:22px;stroke:var(--espresso);fill:none;stroke-width:2;}
-/* scan */
-.scan-area{margin:24px 20px 0;border:2px dashed var(--latte);border-radius:var(--r-md);height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
+
+/* Scan */
+.scan-area{margin:24px 20px 0;border:2px dashed var(--latte);border-radius:var(--r-md);height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
 .scan-ico{width:48px;height:48px;background:var(--amber-lt);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;}
 .scan-ico svg{width:26px;height:26px;stroke:var(--amber);fill:none;stroke-width:2;}
 .or-row{display:flex;align-items:center;gap:10px;margin:14px 20px;}
 .or-line{flex:1;height:1px;background:var(--sand);}
 .or-text{font-size:11px;color:var(--tan);}
 .batch-input{margin:0 20px;background:var(--sand);border-radius:var(--r-sm);padding:10px 14px;font-size:14px;font-weight:600;color:var(--slate);border:none;width:calc(100% - 40px);font-family:monospace;outline:none;}
-.primary-btn{display:block;width:calc(100% - 40px);margin:14px 20px 0;background:var(--espresso);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;}
+.primary-btn{display:block;width:calc(100% - 40px);margin:14px 20px 0;background:var(--espresso);color:#fff;border:none;border-radius:var(--r-md);padding:14px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:opacity .12s;}
 .primary-btn.sage{background:var(--sage);}
-.primary-btn:active{opacity:.85;}
-.recent-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;}
+.primary-btn:hover{opacity:.9;}
+.recent-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;transition:background .1s;}
+.recent-row:hover{background:var(--cream);}
 .recent-row:last-child{border-bottom:none;}
 .rdot{width:8px;height:8px;border-radius:50%;background:var(--latte);flex-shrink:0;}
-/* reveal */
+
+/* Reveal */
 .reveal-wrap{display:flex;flex-direction:column;align-items:center;padding:24px 20px 20px;}
 .farmer-avatar{width:80px;height:80px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:12px;border:3px solid var(--latte);}
 .farmer-name{font-size:21px;font-weight:700;color:var(--espresso);text-align:center;}
@@ -122,16 +148,17 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .farmer-story{width:100%;margin-top:10px;font-size:12px;color:var(--slate);line-height:1.65;}
 .moat-badge{width:100%;margin-top:12px;background:var(--espresso);border-radius:var(--r-md);padding:10px 16px;font-size:11px;color:var(--latte-lt);line-height:1.5;text-align:center;}
 .moat-strong{color:#fff;font-weight:600;}
-.outline-btn{display:block;width:100%;margin-top:12px;background:transparent;color:var(--espresso);border:1.5px solid var(--latte);border-radius:var(--r-md);padding:12px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;}
-/* support bar */
+.outline-btn{display:block;width:100%;margin-top:12px;background:transparent;color:var(--espresso);border:1.5px solid var(--latte);border-radius:var(--r-md);padding:12px;font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:background .12s;}
+.outline-btn:hover{background:var(--sand);}
 .sup-bar{width:100%;margin-top:12px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:10px 14px;}
 .sup-title{font-size:11px;font-weight:700;color:var(--espresso);margin-bottom:8px;}
 .sup-btns{display:flex;gap:8px;}
-.sup-btn{flex:1;padding:7px 4px;background:var(--cream);border:1px solid var(--sand);border-radius:var(--r-sm);font-size:11px;color:var(--slate);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.sup-btn{flex:1;padding:7px 4px;background:var(--cream);border:1px solid var(--sand);border-radius:var(--r-sm);font-size:11px;color:var(--slate);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .12s;}
 .sup-btn.active{background:var(--sage-lt);border-color:var(--sage);color:var(--sage);}
 .sup-btn:active{transform:scale(.95);}
 .sup-ico{font-size:18px;}
-/* journey */
+
+/* Journey */
 .chain-step{display:flex;align-items:flex-start;gap:12px;padding:11px 20px;border-bottom:1px solid var(--sand);}
 .chain-step:last-child{border-bottom:none;}
 .step-ico-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
@@ -149,22 +176,23 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .batch-meta{padding:9px 20px;font-size:11px;color:var(--tan);border-bottom:1px solid var(--sand);}
 .batch-meta span{font-weight:600;color:var(--slate);}
 .pay-summary{margin:10px 16px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:11px 16px;}
-/* impact */
+
+/* Impact */
 .impact-hero{padding:16px 20px;}
 .impact-hero.consumer{background:var(--espresso);}
-.impact-hero.farmer{background:var(--sage);}
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px 0;}
 .stat-tile{background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:11px 12px 9px;}
 .stat-num{font-size:22px;font-weight:700;color:var(--latte);}
 .stat-num.sage{color:var(--sage);}
 .stat-lbl{font-size:10px;color:var(--slate);margin-top:2px;line-height:1.4;}
-.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;}
+.chip{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--sand);cursor:pointer;transition:background .1s;}
+.chip:hover{background:var(--cream);}
 .chip:last-child{border-bottom:none;}
 .chip-ava{width:34px;height:34px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .chip-name{font-size:13px;font-weight:600;color:var(--espresso);}
 .chip-detail{font-size:11px;color:var(--slate);margin-top:1px;}
-.share-cta{margin:10px 16px;background:var(--sage-lt);border:1px solid var(--sage);border-radius:var(--r-md);padding:11px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
-/* badges */
+.share-cta{margin:10px 16px;background:var(--sage-lt);border:1px solid var(--sage);border-radius:var(--r-md);padding:11px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:opacity .12s;}
+.share-cta:hover{opacity:.85;}
 .badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:2px 16px 0;}
 .badge-tile{background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:10px 8px;text-align:center;}
 .badge-tile.earned{background:var(--amber-lt);border-color:var(--amber);}
@@ -172,21 +200,70 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .badge-name{font-size:9px;font-weight:700;color:var(--espresso);}
 .badge-status{font-size:8px;color:var(--tan);margin-top:2px;}
 .badge-status.earned{color:var(--amber);font-weight:600;}
-/* farmer edition */
-.f-cta{margin:14px 16px 0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
-.f-cta:active{opacity:.8;}
+
+/* ═══ COMMUNITY ═══ */
+.comm-filter-bar{display:flex;gap:6px;padding:12px 16px 6px;overflow-x:auto;}
+.comm-filter{padding:6px 14px;border-radius:20px;border:1px solid var(--sand);background:var(--white);font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.comm-filter.active{background:var(--espresso);color:#fff;border-color:var(--espresso);}
+.comm-filter:hover:not(.active){background:var(--sand);}
+.comm-compose{margin:10px 16px 6px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .12s;}
+.comm-compose:hover{background:var(--sand);}
+.comm-compose-ava{width:32px;height:32px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.comm-compose-text{font-size:12px;color:var(--tan);flex:1;}
+.comm-post{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;transition:box-shadow .15s;}
+.comm-post:hover{box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.comm-post-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
+.comm-post-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.comm-post-ava.consumer-ava{background:var(--latte-lt);}
+.comm-post-ava.farmer-ava{background:var(--sage-lt);border:2px solid var(--sage);}
+.comm-post-name{font-size:12px;font-weight:600;color:var(--espresso);}
+.comm-post-meta{font-size:10px;color:var(--tan);margin-top:1px;}
+.comm-badge-tag{font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:.03em;margin-left:4px;}
+.comm-badge-tag.farmer-tag{background:var(--sage-lt);color:var(--sage);}
+.comm-badge-tag.consumer-tag{background:var(--amber-lt);color:var(--amber);}
+.comm-post-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.comm-post-body{padding:8px 14px 6px;}
+.comm-post-text{font-size:12px;color:var(--slate);line-height:1.6;}
+.comm-post-origin{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;background:var(--cream);border-radius:12px;font-size:10px;color:var(--latte);font-weight:600;cursor:pointer;transition:background .1s;}
+.comm-post-origin:hover{background:var(--sand);}
+.comm-post-actions{display:flex;align-items:center;gap:0;padding:4px 6px 10px;border-top:1px solid var(--sand);margin:6px 14px 0 14px;padding-top:8px;}
+.comm-action{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 0;font-size:11px;color:var(--tan);cursor:pointer;border-radius:var(--r-sm);transition:all .12s;}
+.comm-action:hover{background:var(--cream);}
+.comm-action.liked{color:var(--latte);font-weight:600;}
+.comm-action-ico{font-size:14px;}
+.comm-thread-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;cursor:pointer;transition:background .1s;}
+.comm-thread-card:hover{background:var(--sand);}
+.comm-thread-title{font-size:13px;font-weight:600;color:var(--espresso);line-height:1.35;}
+.comm-thread-preview{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
+.comm-thread-foot{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.comm-thread-stat{font-size:10px;color:var(--tan);display:flex;align-items:center;gap:3px;}
+.comm-thread-stat span{font-weight:600;color:var(--slate);}
+.comm-live-dot{width:6px;height:6px;border-radius:50%;background:#E53E3E;display:inline-block;animation:pulse-dot 1.4s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+.comm-ama-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
+.comm-ama-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06);}
+.comm-ama-head{background:linear-gradient(135deg,var(--espresso),var(--latte));padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.comm-ama-body{padding:10px 14px 12px;}
+.comm-ama-q{font-size:12px;color:var(--slate);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--sand);}
+.comm-ama-q:last-child{border-bottom:none;padding-bottom:0;}
+.comm-ama-q strong{color:var(--espresso);}
+
+/* ═══ FARMER ═══ */
+.f-cta{margin:14px 16px 0;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .12s;}
+.f-cta:hover{background:rgba(255,255,255,.2);}
 .f-cta-ico{width:40px;height:40px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .update-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;}
 .update-head{display:flex;align-items:center;gap:10px;padding:10px 14px 8px;}
 .update-ava{width:30px;height:30px;border-radius:50%;background:var(--sage-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.update-img{height:110px;background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%);display:flex;align-items:center;justify-content:center;font-size:40px;}
+.update-img{height:120px;background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%);display:flex;align-items:center;justify-content:center;font-size:40px;}
 .update-body{padding:10px 14px 12px;}
 .update-text{font-size:12px;color:var(--slate);line-height:1.55;}
 .reactions{display:flex;gap:8px;margin-top:8px;}
 .reaction{display:flex;align-items:center;gap:3px;background:var(--cream);border-radius:20px;padding:3px 9px;font-size:11px;color:var(--slate);cursor:pointer;border:1px solid var(--sand);transition:all .15s;}
 .reaction.active{background:var(--sage-lt);color:var(--sage);border-color:var(--sage);}
-.reaction:active{transform:scale(.93);}
-.upload-btn{display:flex;align-items:center;gap:12px;margin:0 16px 10px;background:var(--white);border:2px dashed var(--sage);border-radius:var(--r-md);padding:14px;cursor:pointer;}
+.reaction:hover:not(.active){background:var(--sand);}
+.upload-btn{display:flex;align-items:center;gap:12px;margin:0 16px 10px;background:var(--white);border:2px dashed var(--sage);border-radius:var(--r-md);padding:14px;cursor:pointer;transition:background .12s;}
+.upload-btn:hover{background:var(--sage-lt);}
 .upload-ico{width:40px;height:40px;background:var(--sage-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .upload-title{font-size:13px;font-weight:600;color:var(--sage);}
 .upload-sub{font-size:11px;color:var(--tan);margin-top:1px;}
@@ -196,667 +273,507 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .signal-text{flex:1;font-size:12px;color:var(--slate);line-height:1.4;}
 .signal-text strong{color:var(--espresso);font-weight:600;}
 .signal-time{font-size:10px;color:var(--tan);}
-.edu-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.edu-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:background .1s;}
+.edu-card:hover{background:var(--sand);}
 .edu-ico{width:38px;height:38px;background:var(--sage-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .edu-title{font-size:13px;font-weight:600;color:var(--espresso);}
 .edu-sub{font-size:11px;color:var(--tan);margin-top:2px;}
-/* toast */
-.toast{position:absolute;bottom:96px;left:20px;right:20px;background:var(--espresso);color:#fff;border-radius:var(--r-md);padding:11px 16px;font-size:13px;font-weight:500;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
+
+/* Toast */
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--espresso);color:#fff;border-radius:var(--r-md);padding:11px 24px;font-size:13px;font-weight:500;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:999;white-space:nowrap;max-width:90vw;}
 .toast.show{opacity:1;}
+.toast.sage{background:var(--sage);}
 
-/* ═══ COMMUNITY TAB STYLES ═══ */
-.comm-filter-bar{display:flex;gap:6px;padding:12px 16px 6px;overflow-x:auto;}
-.comm-filter{padding:6px 14px;border-radius:20px;border:1px solid var(--sand);background:var(--white);font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;white-space:nowrap;transition:all .15s;}
-.comm-filter.active{background:var(--espresso);color:#fff;border-color:var(--espresso);}
-.comm-filter:active{transform:scale(.95);}
 
-.comm-compose{margin:10px 16px 6px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
-.comm-compose:active{background:var(--cream);}
-.comm-compose-ava{width:32px;height:32px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.comm-compose-text{font-size:12px;color:var(--tan);flex:1;}
+/* ════════════════════════════════════════
+   DESKTOP — 768px+
+   ════════════════════════════════════════ */
+@media(min-width:768px){
+  :root{--sidebar-w:240px;}
+  body{background:#EEEAE3;}
 
-.comm-post{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;}
-.comm-post-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
-.comm-post-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
-.comm-post-ava.consumer-ava{background:var(--latte-lt);}
-.comm-post-ava.farmer-ava{background:var(--sage-lt);border:2px solid var(--sage);}
-.comm-post-name{font-size:12px;font-weight:600;color:var(--espresso);}
-.comm-post-meta{font-size:10px;color:var(--tan);margin-top:1px;display:flex;align-items:center;gap:4px;}
-.comm-badge-tag{font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:.03em;}
-.comm-badge-tag.farmer-tag{background:var(--sage-lt);color:var(--sage);}
-.comm-badge-tag.consumer-tag{background:var(--amber-lt);color:var(--amber);}
-.comm-post-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;}
-.comm-post-body{padding:8px 14px 6px;}
-.comm-post-text{font-size:12px;color:var(--slate);line-height:1.6;}
-.comm-post-origin{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;background:var(--cream);border-radius:12px;font-size:10px;color:var(--latte);font-weight:600;cursor:pointer;}
-.comm-post-actions{display:flex;align-items:center;gap:0;padding:4px 6px 10px;border-top:1px solid var(--sand);margin:6px 14px 0 14px;padding-top:8px;}
-.comm-action{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 0;font-size:11px;color:var(--tan);cursor:pointer;border-radius:var(--r-sm);transition:all .12s;}
-.comm-action:active{background:var(--cream);}
-.comm-action.liked{color:var(--latte);font-weight:600;}
-.comm-action-ico{font-size:14px;}
+  /* ── Sidebar visible ── */
+  .sidebar{
+    display:flex;flex-direction:column;
+    position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
+    background:var(--white);border-right:1px solid var(--sand);
+    padding:0;z-index:100;overflow-y:auto;
+  }
+  .sidebar-brand{display:flex;align-items:center;gap:10px;padding:22px 20px 20px;font-size:16px;font-weight:700;color:var(--espresso);}
+  .sidebar-brand-ico{font-size:22px;}
+  .sidebar-nav{display:flex;flex-direction:column;gap:2px;padding:0 10px;}
+  .sidebar .s-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-md);cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent;}
+  .sidebar .s-nav-item:hover{background:var(--cream);}
+  .sidebar .s-nav-item.active{background:var(--sand);}
+  .sidebar .s-nav-item.farmer-active{background:var(--sage-lt);}
+  .sidebar .s-nav-ico{width:20px;height:20px;display:flex;align-items:center;justify-content:center;}
+  .sidebar .s-nav-ico svg{width:20px;height:20px;stroke:var(--tan);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s;}
+  .sidebar .s-nav-item.active .s-nav-ico svg{stroke:var(--latte);}
+  .sidebar .s-nav-item.farmer-active .s-nav-ico svg{stroke:var(--sage);}
+  .sidebar .s-nav-label{font-size:13px;font-weight:500;color:var(--tan);transition:color .15s;}
+  .sidebar .s-nav-item.active .s-nav-label{color:var(--espresso);font-weight:600;}
+  .sidebar .s-nav-item.farmer-active .s-nav-label{color:var(--sage);font-weight:600;}
+  .sidebar-sep{height:1px;background:var(--sand);margin:10px 20px;}
+  .sidebar-switch{margin-top:auto;padding:16px 20px;border-top:1px solid var(--sand);}
+  .sidebar-switch-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--r-sm);cursor:pointer;font-size:12px;color:var(--tan);font-weight:500;transition:background .12s;}
+  .sidebar-switch-btn:hover{background:var(--cream);}
+  .sidebar-switch-btn svg{width:16px;height:16px;stroke:var(--tan);fill:none;stroke-width:1.8;}
 
-.comm-thread-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;cursor:pointer;}
-.comm-thread-card:active{background:var(--cream);}
-.comm-thread-title{font-size:13px;font-weight:600;color:var(--espresso);line-height:1.35;}
-.comm-thread-preview{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
-.comm-thread-foot{display:flex;align-items:center;gap:8px;margin-top:8px;}
-.comm-thread-stat{font-size:10px;color:var(--tan);display:flex;align-items:center;gap:3px;}
-.comm-thread-stat span{font-weight:600;color:var(--slate);}
+  /* ── Hide mobile bottom nav ── */
+  .bottom-nav{display:none;}
 
-.comm-live-dot{width:6px;height:6px;border-radius:50%;background:#E53E3E;display:inline-block;animation:pulse-dot 1.4s infinite;}
-@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+  /* ── Main adjustments ── */
+  .scroll-body{padding-bottom:32px;max-width:680px;margin:0 auto;}
 
-.comm-ama-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
-.comm-ama-card:active{opacity:.9;}
-.comm-ama-head{background:linear-gradient(135deg,var(--espresso),var(--latte));padding:12px 14px;display:flex;align-items:center;gap:10px;}
-.comm-ama-body{padding:10px 14px 12px;}
-.comm-ama-q{font-size:12px;color:var(--slate);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--sand);}
-.comm-ama-q:last-child{border-bottom:none;padding-bottom:0;}
-.comm-ama-q strong{color:var(--espresso);}
+  /* Hero bar full bleed within scroll-body */
+  .hero-bar{border-radius:0 0 var(--r-lg) var(--r-lg);padding:28px 28px 22px;}
+  .hero-title{font-size:26px;}
+
+  /* Widen cards to fill */
+  .bean-card,.camp-card,.story-card,.comm-post,.comm-thread-card,.comm-ama-card,.update-card,.edu-card,.upload-btn,.card,.share-cta{margin-left:0;margin-right:0;}
+  .sec-label{padding-left:0;padding-right:0;}
+  .qr-cta,.f-cta{margin-left:0;margin-right:0;}
+  .scan-area,.or-row{margin-left:0;margin-right:0;}
+  .batch-input{margin-left:0;margin-right:0;width:100%;}
+  .primary-btn{margin-left:0;margin-right:0;width:100%;}
+  .stat-grid{padding-left:0;padding-right:0;grid-template-columns:repeat(4,1fr);}
+  .badge-grid{padding-left:0;padding-right:0;grid-template-columns:repeat(6,1fr);}
+  .comm-filter-bar{padding-left:0;padding-right:0;}
+  .comm-compose{margin-left:0;margin-right:0;}
+  .reveal-wrap{padding-left:0;padding-right:0;}
+  .chain-step{padding-left:0;padding-right:0;}
+  .batch-meta{padding-left:0;padding-right:0;}
+  .pay-summary{margin-left:0;margin-right:0;}
+  .edition-toggle{margin-left:0;margin-right:0;}
+  .signal-item{padding-left:0;padding-right:0;}
+
+  /* Taller images */
+  .comm-post-img{height:220px;}
+  .update-img{height:200px;}
+  .story-img{height:140px;}
+
+  .toast{bottom:32px;}
+}
+
+@media(min-width:1100px){
+  .scroll-body{max-width:720px;}
+  .hero-title{font-size:28px;}
+}
 </style>
 </head>
 <body>
 
-<!-- ══ CONSUMER EDITION ══════════════════════════════════ -->
-<div class="device-wrap">
+<div class="app-shell">
+
+<!-- ═══ SIDEBAR (desktop) ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><span class="sidebar-brand-ico">☕</span> Coda Coffee</div>
+  <div class="sidebar-nav" id="sidebar-nav-consumer">
+    <div class="s-nav-item active" data-tab="home" onclick="goTab('home')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="s-nav-label">Discover</div></div>
+    <div class="s-nav-item" data-tab="community" onclick="goTab('community')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="s-nav-label">Community</div></div>
+    <div class="s-nav-item" data-tab="impact" onclick="goTab('impact')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="s-nav-label">Impact</div></div>
+  </div>
+  <div class="sidebar-nav" id="sidebar-nav-farmer" style="display:none">
+    <div class="s-nav-item active" data-tab="f-home" onclick="goTab('f-home')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="s-nav-label">Home</div></div>
+    <div class="s-nav-item" data-tab="f-upload" onclick="goTab('f-upload')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="s-nav-label">Post</div></div>
+    <div class="s-nav-item" data-tab="f-learn" onclick="goTab('f-learn')"><div class="s-nav-ico"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="s-nav-label">Learn</div></div>
+  </div>
+  <div class="sidebar-switch">
+    <div class="sidebar-switch-btn" onclick="toggleEdition()">
+      <svg viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      <span id="switch-label">Switch to Farmer</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MOBILE BOTTOM NAV ═══ -->
+<nav class="bottom-nav" id="mobile-nav">
+  <div id="mob-nav-consumer">
+    <div style="display:flex">
+      <div class="nav-item active" data-tab="home" onclick="goTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+      <div class="nav-item" data-tab="community" onclick="goTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
+      <div class="nav-item" data-tab="impact" onclick="goTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+    </div>
+  </div>
+  <div id="mob-nav-farmer" style="display:none">
+    <div style="display:flex">
+      <div class="nav-item farmer-active" data-tab="f-home" onclick="goTab('f-home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
+      <div class="nav-item" data-tab="f-upload" onclick="goTab('f-upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
+      <div class="nav-item" data-tab="f-learn" onclick="goTab('f-learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main">
+
+<!-- HOME -->
+<div id="s-home" class="screen active"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer">
+    <div class="eyebrow">Good morning</div>
+    <div class="hero-title">Know your coffee,<br>know your farmer.</div>
+    <div class="hero-sub">Every cup has a story. Start yours.</div>
+    <div class="qr-cta" onclick="goScreen('scan')">
+      <div class="qr-box"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Scan your bag</div><div style="font-size:11px;color:var(--latte-lt);margin-top:2px">Trace beans from farm to cup</div></div>
+      <div style="font-size:20px;color:var(--latte-lt)">›</div>
+    </div>
+  </div>
   <div class="edition-toggle">
-    <button class="ed-btn active" onclick="setEd('consumer')">☕ Consumer Edition</button>
-    <button class="ed-btn farmer" onclick="setEd('farmer')">🌱 Farmer Edition</button>
+    <button class="ed-btn active" onclick="setEd('consumer')">☕ Consumer</button>
+    <button class="ed-btn farmer" onclick="setEd('farmer')">🌱 Farmer</button>
   </div>
-
-  <div class="device" id="dev-consumer">
-    <div class="status-bar consumer"><span class="status-time">9:41</span><span>Coda Coffee</span><span>●●●</span></div>
-
-    <!-- HOME -->
-    <div id="c-home" class="screen active">
-      <div class="scroll-body">
-        <div class="hero-bar consumer">
-          <div class="eyebrow">Good morning</div>
-          <div class="hero-title">Know your coffee,<br>know your farmer.</div>
-          <div class="hero-sub">Every cup has a story. Start yours.</div>
-          <div class="qr-cta" onclick="cGo('scan')">
-            <div class="qr-box"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div>
-            <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Scan your bag</div><div style="font-size:11px;color:var(--latte-lt);margin-top:2px">Trace beans from farm to cup</div></div>
-            <div style="font-size:20px;color:var(--latte-lt)">›</div>
-          </div>
-        </div>
-        <div class="sec-label">🔥 Active campaign</div>
-        <div class="camp-card" onclick="cGo('campaigns')">
-          <div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div>
-          <div class="camp-body">
-            <div class="camp-title">Uganda Great Lakes — March harvest</div>
-            <div class="camp-desc">Help Amara reach her quality upgrade goal — follow her farm for the season.</div>
-            <div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val">847 / 1,000</div></div>
-            <div class="cp-track"><div class="cp-fill" style="width:84.7%"></div></div>
-            <button class="camp-btn" onclick="event.stopPropagation();joinCamp(this,'c')">Join this campaign</button>
-          </div>
-        </div>
-        <div class="sec-label">Current offerings</div>
-        <div class="bean-card" onclick="cGo('reveal')">
-          <div class="bean-top"><div class="bean-flag">🇺🇬</div><div style="flex:1"><div class="bean-name">Great Lakes Washed</div><div class="bean-origin">Kampala, Uganda</div></div><div class="score-pill">86.2</div></div>
-          <div class="flavor-bars">
-            <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:78%"></div></div></div>
-            <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:62%"></div></div></div>
-            <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:85%"></div></div></div>
-          </div>
-        </div>
-        <div class="bean-card">
-          <div class="bean-top"><div class="bean-flag">🇧🇷</div><div style="flex:1"><div class="bean-name">AFASA Natural</div><div class="bean-origin">Minas Gerais, Brazil</div></div><div class="score-pill">85.5</div></div>
-          <div class="flavor-bars">
-            <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:52%"></div></div></div>
-            <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:88%"></div></div></div>
-            <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:91%"></div></div></div>
-          </div>
-        </div>
-        <div class="sec-label">Stories from the farm</div>
-        <div class="story-card" onclick="cGo('story')">
-          <div class="story-img"><div style="font-size:24px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · Feb 2025</div></div>
-          <div class="story-body"><div class="story-title">How Amara tripled her yield in two seasons</div><div class="story-desc">After joining Farm2Cup, she switched bean varieties and adjusted her drying schedule.</div></div>
-        </div>
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
+  <div class="sec-label">🔥 Active campaign</div>
+  <div class="camp-card" onclick="goScreen('campaigns')">
+    <div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div>
+    <div class="camp-body">
+      <div class="camp-title">Uganda Great Lakes — March harvest</div>
+      <div class="camp-desc">Help Amara reach her quality upgrade goal — follow her farm for the season.</div>
+      <div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val">847 / 1,000</div></div>
+      <div class="cp-track"><div class="cp-fill" style="width:84.7%"></div></div>
+      <button class="camp-btn" onclick="event.stopPropagation();joinCamp(this)">Join this campaign</button>
     </div>
-
-    <!-- SCAN (accessible from hero CTA, not from nav) -->
-    <div id="c-scan" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Scan your bag</div></div></div>
-        <div class="scan-area"><div class="scan-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div style="font-size:13px;font-weight:600;color:var(--espresso)">Point camera at QR code</div><div style="font-size:11px;color:var(--slate)">Found on the bag label</div></div>
-        <div class="or-row"><div class="or-line"></div><div class="or-text">or enter batch code</div><div class="or-line"></div></div>
-        <input class="batch-input" type="text" value="UG-2025-0314">
-        <div class="primary-btn" onclick="cGo('reveal')">Find my coffee →</div>
-        <div class="sec-label" style="margin-top:8px">Recent scans</div>
-        <div class="card" style="margin:0 16px 12px">
-          <div class="recent-row" onclick="cGo('reveal')"><div class="rdot"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">Great Lakes Washed · Uganda</div><div style="font-size:11px;color:var(--tan)">Today</div></div>
-          <div class="recent-row"><div class="rdot" style="background:var(--tan)"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">AFASA Natural · Brazil</div><div style="font-size:11px;color:var(--tan)">3 days ago</div></div>
-        </div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- REVEAL -->
-    <div id="c-reveal" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('scan')"><div class="back-btn">‹</div><div class="back-title">Meet the farmer</div><div class="back-tag">UG-2025-0314</div></div></div>
-        <div class="reveal-wrap">
-          <div class="farmer-avatar">👩🏾</div>
-          <div class="farmer-name">Amara Nakato</div>
-          <div class="farmer-loc">Kampala, Uganda · Farm2Cup since 2022</div>
-          <div class="pay-box"><div class="pay-title">✓ Payment confirmed — Bext360 blockchain</div><div class="pay-val">Paid 3× commodity rate · March 14, 2025</div></div>
-          <div class="score-row"><div class="score-num">86.2</div><div><div class="score-lbl">Cupping score — Specialty Grade</div><div class="score-sub">80+ = Specialty · Her best harvest yet</div></div></div>
-          <div class="farmer-story">Amara has grown coffee on her 1.2 acres for over a decade. After joining Farm2Cup, she switched to Bourbon varieties and improved her drying process. Her score rose from 82 to 86+ in two seasons — and her income more than doubled.</div>
-          <div class="sup-bar">
-            <div class="sup-title">Send Amara your support</div>
-            <div class="sup-btns">
-              <div class="sup-btn" id="s-like" onclick="tapSup('s-like','❤️','1.2k')"><div class="sup-ico">❤️</div><div>1.2k</div></div>
-              <div class="sup-btn" id="s-msg" onclick="tapSup('s-msg','💬','Sent!')"><div class="sup-ico">💬</div><div>Message</div></div>
-              <div class="sup-btn" id="s-follow" onclick="tapSup('s-follow','🌱','Following')"><div class="sup-ico">🌱</div><div>Follow</div></div>
-              <div class="sup-btn" id="s-share" onclick="tapSup('s-share','🔗','Copied!')"><div class="sup-ico">🔗</div><div>Share</div></div>
-            </div>
-          </div>
-          <div class="moat-badge"><span class="moat-strong">This is not a marketing claim.</span> Machine-verified Bext360 blockchain record — cannot be altered.</div>
-          <div class="outline-btn" onclick="cGo('journey')">See full bean journey →</div>
-          <div style="height:8px"></div>
-        </div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- JOURNEY -->
-    <div id="c-journey" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('reveal')"><div class="back-btn">‹</div><div class="back-title">Bean journey</div><div class="back-tag">Great Lakes Washed</div></div></div>
-        <div class="batch-meta">Batch <span>UG-2025-0314</span> · <span>Blockchain verified</span></div>
-        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">🌱</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Harvested</div><div class="step-detail">Amara Nakato · 1.2 acres · 1,650m · Bourbon variety</div><div class="step-time">March 14, 2025</div><div class="step-ok">✓ Bext360 verified · 86.2</div></div></div>
-        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">💧</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Washed &amp; dried</div><div class="step-detail">Great Lakes Coffee · Kampala · 72hr ferment · 18-day dry</div><div class="step-time">March 18–25, 2025</div><div class="step-ok">✓ Blockchain record</div></div></div>
-        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">📦</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Milled &amp; exported</div><div class="step-detail">Entebbe → Denver, CO · GrainPro sealed</div><div class="step-time">April 2, 2025</div><div class="step-ok">✓ Shipping record</div></div></div>
-        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico inprogress">🔥</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Roasted in Denver</div><div class="step-detail">Coda HQ · Tim Thwaites · Medium roast</div><div class="step-time">April 19, 2025</div><div class="step-prog">In progress</div></div></div>
-        <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico pending">☕</div></div><div class="step-body" style="opacity:.4"><div class="step-title">In your cup</div><div class="step-detail">Coda retail store · Denver, CO</div></div></div>
-        <div class="pay-summary"><div style="font-size:11px;color:var(--tan);margin-bottom:2px">Farmer payment</div><div style="font-size:14px;font-weight:700;color:var(--espresso)">3× commodity rate paid</div><div style="font-size:10px;color:var(--sage);margin-top:2px">Instant · Bext360 receipt · March 14, 2025</div></div>
-        <div class="primary-btn" style="margin-top:8px" onclick="cGo('impact')">See your impact →</div>
-        <div style="height:16px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- IMPACT -->
-    <div id="c-impact" class="screen">
-      <div class="scroll-body">
-        <div class="impact-hero consumer"><div style="font-size:17px;font-weight:700;color:#fff">Your impact</div><div style="font-size:11px;color:var(--latte-lt);margin-top:3px">Every purchase adds up</div></div>
-        <div class="sec-label">Your footprint</div>
-        <div class="stat-grid">
-          <div class="stat-tile"><div class="stat-num">4</div><div class="stat-lbl">Bags purchased</div></div>
-          <div class="stat-tile"><div class="stat-num">2</div><div class="stat-lbl">Farmers supported</div></div>
-          <div class="stat-tile"><div class="stat-num">3×</div><div class="stat-lbl">Avg. premium paid</div></div>
-          <div class="stat-tile"><div class="stat-num" style="font-size:14px;line-height:1.3">Uganda<br>Brazil</div><div class="stat-lbl">Origins</div></div>
-        </div>
-        <div class="sec-label">Your badges</div>
-        <div class="badge-grid">
-          <div class="badge-tile earned"><div class="badge-ico">🇺🇬</div><div class="badge-name">Uganda Explorer</div><div class="badge-status earned">Earned</div></div>
-          <div class="badge-tile earned"><div class="badge-ico">❤️</div><div class="badge-name">First Support</div><div class="badge-status earned">Earned</div></div>
-          <div class="badge-tile"><div class="badge-ico">🌍</div><div class="badge-name">Globe Trotter</div><div class="badge-status">3 origins needed</div></div>
-          <div class="badge-tile"><div class="badge-ico">🏅</div><div class="badge-name">Campaign Hero</div><div class="badge-status">Join a campaign</div></div>
-          <div class="badge-tile earned"><div class="badge-ico">🇧🇷</div><div class="badge-name">Brazil Explorer</div><div class="badge-status earned">Earned</div></div>
-          <div class="badge-tile"><div class="badge-ico">⭐</div><div class="badge-name">Loyal Sipper</div><div class="badge-status">10 bags needed</div></div>
-        </div>
-        <div class="sec-label">Farmers you've supported</div>
-        <div class="card" style="margin:0 16px 10px">
-          <div class="chip" onclick="cGo('reveal')"><div class="chip-ava">👩🏾</div><div><div class="chip-name">Amara Nakato</div><div class="chip-detail">Uganda · 2 bags · Following</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
-          <div class="chip"><div class="chip-ava">👨🏽</div><div><div class="chip-name">Carlos Mendes</div><div class="chip-detail">Brazil · 2 bags</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
-        </div>
-        <div class="share-cta" onclick="cToast('Link copied! Share your impact.')"><div style="font-size:22px">🌱</div><div><div style="font-size:13px;font-weight:600;color:var(--sage)">Share your impact</div><div style="font-size:11px;color:#3B6D11;margin-top:1px">Let others know where their coffee comes from</div></div></div>
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item active" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- CAMPAIGNS -->
-    <div id="c-campaigns" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Campaigns</div></div></div>
-        <div class="sec-label">Active now</div>
-        <div class="camp-card">
-          <div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div>
-          <div class="camp-body">
-            <div class="camp-title">Uganda Great Lakes — March harvest</div>
-            <div class="camp-desc">Help Amara reach her 2025 quality upgrade goal. Every follower unlocks Coda's matching premium for Amara's next batch.</div>
-            <div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val" id="cp-val2">847 / 1,000</div></div>
-            <div class="cp-track"><div class="cp-fill" id="cp-bar2" style="width:84.7%"></div></div>
-            <button class="camp-btn" onclick="joinCamp(this,'c2')">Join this campaign</button>
-          </div>
-        </div>
-        <div class="camp-card" style="border-color:var(--sage)">
-          <div class="camp-head" style="background:var(--sage)"><span style="font-size:14px">🌱</span><div class="camp-lbl">Follow this farm</div></div>
-          <div class="camp-body">
-            <div class="camp-title">Carlos Mendes — Brazil AFASA</div>
-            <div class="camp-desc">Carlos is experimenting with new drying methods. Follow his farm to get harvest updates directly in your feed.</div>
-            <div class="cp-row"><div class="cp-lbl">Followers</div><div class="cp-val" style="color:var(--sage)">312 / 500</div></div>
-            <div class="cp-track"><div class="cp-fill" style="width:62.4%;background:var(--sage)"></div></div>
-            <button class="camp-btn" style="background:var(--sage)" onclick="cToast('You are now following Carlos\'s farm! 🌱')">Follow Carlos's farm</button>
-          </div>
-        </div>
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- STORY -->
-    <div id="c-story" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Farm story</div></div></div>
-        <div class="story-img" style="height:130px;margin:0"><div style="font-size:36px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · February 2025</div></div>
-        <div style="padding:16px 20px">
-          <div style="font-size:18px;font-weight:700;color:var(--espresso);line-height:1.3;margin-bottom:12px">How Amara tripled her yield in two seasons</div>
-          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px">When Amara Nakato first heard about Coda's Farm2Cup program, she was skeptical. She had been growing coffee the same way for ten years.</div>
-          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:10px">The answer came from the bextmachine at her cooperative. For the first time, she could see a score: 82.4. And she could see that her neighbor's beans scored 85.1.</div>
-          <div style="font-size:12px;color:var(--slate);line-height:1.7;margin-bottom:14px">She switched to Bourbon variety seedlings and adjusted her drying from 12 to 18 days. By the next harvest, her score was 86.2 — and her income had more than doubled.</div>
-          <div style="background:var(--sand);border-radius:var(--r-md);padding:12px 14px;margin-bottom:14px"><div style="font-size:12px;color:var(--slate);line-height:1.6;font-style:italic">"The machine doesn't lie. It just tells you the number."</div><div style="font-size:11px;font-weight:600;color:var(--latte);margin-top:6px">— Amara Nakato</div></div>
-          <div class="primary-btn" style="margin:0 0 8px" onclick="cGo('reveal')">Meet Amara →</div>
-        </div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- ═══ COMMUNITY ═══ -->
-    <div id="c-community" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer">
-          <div class="eyebrow">Farm · Roast · Sip · Share</div>
-          <div class="hero-title">Community</div>
-          <div class="hero-sub">Conversations between farmers &amp; coffee lovers</div>
-        </div>
-
-        <!-- Filter bar -->
-        <div class="comm-filter-bar">
-          <div class="comm-filter active" onclick="commFilter(this)">All</div>
-          <div class="comm-filter" onclick="commFilter(this)">Farm updates</div>
-          <div class="comm-filter" onclick="commFilter(this)">Discussions</div>
-          <div class="comm-filter" onclick="commFilter(this)">Q&A</div>
-        </div>
-
-        <!-- Compose -->
-        <div class="comm-compose" onclick="cToast('✍️ Compose your post — share a brew tip or ask a question!')">
-          <div class="comm-compose-ava">🙋</div>
-          <div class="comm-compose-text">Share a thought, brew tip, or question...</div>
-          <div style="font-size:18px;color:var(--latte)">📸</div>
-        </div>
-
-        <!-- Live AMA card -->
-        <div class="comm-ama-card" onclick="cGo('ama')">
-          <div class="comm-ama-head">
-            <div class="comm-live-dot"></div>
-            <div style="font-size:13px;font-weight:700;color:#fff;flex:1">Live Q&A with Amara Nakato</div>
-            <div style="font-size:10px;color:var(--latte-lt)">42 watching</div>
-          </div>
-          <div class="comm-ama-body">
-            <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Ask Amara anything about her farm, process, or life in Kampala.</div>
-            <div style="display:flex;gap:6px;flex-wrap:wrap">
-              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">🌱 Growing</div>
-              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">💧 Processing</div>
-              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">☕ Tasting</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="sec-label">Latest posts</div>
-
-        <!-- Farmer post with image -->
-        <div class="comm-post">
-          <div class="comm-post-head">
-            <div class="comm-post-ava farmer-ava">👩🏾</div>
-            <div style="flex:1">
-              <div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div>
-              <div class="comm-post-meta">Kampala, Uganda · 2h ago</div>
-            </div>
-          </div>
-          <div class="comm-post-img" style="background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%)">🫘</div>
-          <div class="comm-post-body">
-            <div class="comm-post-text">First cherries of the March harvest! The Bourbon seedlings are producing beautiful red cherries this year. Can't wait for the cupping results 🤞</div>
-            <div class="comm-post-origin" onclick="event.stopPropagation();cGo('reveal')">🇺🇬 Great Lakes Washed · 86.2</div>
-          </div>
-          <div class="comm-post-actions">
-            <div class="comm-action liked" id="ca-1" onclick="toggleLike('ca-1')"><span class="comm-action-ico">❤️</span> 234</div>
-            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 18</div>
-            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
-          </div>
-        </div>
-
-        <!-- Consumer post -->
-        <div class="comm-post">
-          <div class="comm-post-head">
-            <div class="comm-post-ava consumer-ava">👨🏻</div>
-            <div style="flex:1">
-              <div class="comm-post-name">Jake R. <span class="comm-badge-tag consumer-tag">Sipper</span></div>
-              <div class="comm-post-meta">Denver, CO · 5h ago</div>
-            </div>
-          </div>
-          <div class="comm-post-body">
-            <div class="comm-post-text">Just brewed Amara's Great Lakes Washed as a V60 pour-over — the citrus notes are incredible this batch. Easily my favorite morning cup this month. Anyone else tried a longer bloom time with this one?</div>
-            <div class="comm-post-origin" onclick="event.stopPropagation();cGo('reveal')">🇺🇬 Great Lakes Washed · 86.2</div>
-          </div>
-          <div class="comm-post-actions">
-            <div class="comm-action" id="ca-2" onclick="toggleLike('ca-2')"><span class="comm-action-ico">🤍</span> 47</div>
-            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 12</div>
-            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
-          </div>
-        </div>
-
-        <!-- Farmer reply post -->
-        <div class="comm-post">
-          <div class="comm-post-head">
-            <div class="comm-post-ava farmer-ava">👨🏽</div>
-            <div style="flex:1">
-              <div class="comm-post-name">Carlos Mendes <span class="comm-badge-tag farmer-tag">Farmer</span></div>
-              <div class="comm-post-meta">Minas Gerais, Brazil · 8h ago</div>
-            </div>
-          </div>
-          <div class="comm-post-img" style="background:linear-gradient(135deg,#BA7517 0%,#8D6543 100%)">☀️</div>
-          <div class="comm-post-body">
-            <div class="comm-post-text">Experimenting with a new 24-day natural drying process on raised beds. The extended time should bring out more chocolate and berry sweetness. Will share cupping results next week!</div>
-            <div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div>
-          </div>
-          <div class="comm-post-actions">
-            <div class="comm-action" id="ca-3" onclick="toggleLike('ca-3')"><span class="comm-action-ico">🤍</span> 89</div>
-            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 31</div>
-            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
-          </div>
-        </div>
-
-        <div class="sec-label">Trending discussions</div>
-
-        <!-- Thread cards -->
-        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
-          <div class="comm-thread-title">What's the best brew method for high-altitude washed beans?</div>
-          <div class="comm-thread-preview">Started by Sarah K. — "I've been experimenting with my Chemex vs V60 for Amara's latest batch..."</div>
-          <div class="comm-thread-foot">
-            <div class="comm-thread-stat">💬 <span>24</span> replies</div>
-            <div class="comm-thread-stat">❤️ <span>56</span></div>
-            <div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div>
-          </div>
-        </div>
-
-        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
-          <div class="comm-thread-title">Farmer Q: What flavor notes do you taste in your own coffee?</div>
-          <div class="comm-thread-preview">Amara answers — "Honestly I taste red fruit and honey. But my daughter says it tastes like chocolate!"</div>
-          <div class="comm-thread-foot">
-            <div class="comm-thread-stat">💬 <span>41</span> replies</div>
-            <div class="comm-thread-stat">❤️ <span>128</span></div>
-            <div class="comm-thread-stat" style="margin-left:auto">⭐ Staff pick</div>
-          </div>
-        </div>
-
-        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
-          <div class="comm-thread-title">How does blockchain verification actually work?</div>
-          <div class="comm-thread-preview">Tim from Coda explains the Bext360 process from cherry scan to final record...</div>
-          <div class="comm-thread-foot">
-            <div class="comm-thread-stat">💬 <span>17</span> replies</div>
-            <div class="comm-thread-stat">❤️ <span>93</span></div>
-            <div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div>
-          </div>
-        </div>
-
-        <!-- Consumer post 2 -->
-        <div class="comm-post">
-          <div class="comm-post-head">
-            <div class="comm-post-ava consumer-ava">👩🏼</div>
-            <div style="flex:1">
-              <div class="comm-post-name">Maria L. <span class="comm-badge-tag consumer-tag">Sipper</span></div>
-              <div class="comm-post-meta">Boulder, CO · 1d ago</div>
-            </div>
-          </div>
-          <div class="comm-post-body">
-            <div class="comm-post-text">Gave Coda's AFASA Natural to my parents who "only drink Folgers." They couldn't believe coffee could taste like this. My dad asked for Carlos's name so he could thank him. This is why traceability matters. ❤️</div>
-            <div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div>
-          </div>
-          <div class="comm-post-actions">
-            <div class="comm-action liked" id="ca-4" onclick="toggleLike('ca-4')"><span class="comm-action-ico">❤️</span> 312</div>
-            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 45</div>
-            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
-          </div>
-        </div>
-
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item active" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <!-- ═══ AMA (Live Q&A detail) ═══ -->
-    <div id="c-ama" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar consumer">
-          <div class="back-row" onclick="cGo('community')">
-            <div class="back-btn">‹</div>
-            <div class="back-title">Live Q&A</div>
-            <div class="back-tag"><span class="comm-live-dot" style="margin-right:4px"></span> Live</div>
-          </div>
-        </div>
-
-        <!-- AMA host -->
-        <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--white);border-bottom:1px solid var(--sand)">
-          <div style="width:48px;height:48px;border-radius:50%;background:var(--sage-lt);border:2px solid var(--sage);display:flex;align-items:center;justify-content:center;font-size:24px">👩🏾</div>
-          <div style="flex:1">
-            <div style="font-size:14px;font-weight:700;color:var(--espresso)">Amara Nakato</div>
-            <div style="font-size:11px;color:var(--slate);margin-top:1px">Coffee farmer · Kampala, Uganda</div>
-          </div>
-          <div style="font-size:10px;color:var(--sage);font-weight:600;background:var(--sage-lt);padding:4px 10px;border-radius:12px">42 watching</div>
-        </div>
-
-        <div class="sec-label">Questions & answers</div>
-
-        <div class="comm-ama-card" style="border-color:var(--sand);cursor:default">
-          <div class="comm-ama-body" style="padding:0">
-            <div class="comm-ama-q"><strong>Sarah K.:</strong> What time do you wake up to start picking cherries?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">I'm usually in the field by 6am. The mornings are cool in Kampala and the cherries are firmest then. My daughter helps after school!</span></div>
-            <div class="comm-ama-q"><strong>Jake R.:</strong> What does your coffee taste like to YOU?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">Ha! My daughter says chocolate. I taste something like honey and red berries. But I'm biased 😄</span></div>
-            <div class="comm-ama-q"><strong>Maria L.:</strong> Has the premium pay changed your daily life?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">Yes — my daughter is now in a better school. I also bought new drying beds. Before Farm2Cup, I couldn't afford either.</span></div>
-            <div class="comm-ama-q" style="opacity:.5"><strong>Mike T.:</strong> How do you decide when cherries are ripe enough to pick?<br><span style="font-size:10px;color:var(--tan);display:block;margin-top:3px">⏳ Waiting for Amara's answer...</span></div>
-          </div>
-        </div>
-
-        <!-- Ask input -->
-        <div style="margin:6px 16px 0;display:flex;gap:8px;align-items:center;">
-          <input style="flex:1;background:var(--sand);border:none;border-radius:var(--r-md);padding:12px 14px;font-size:13px;color:var(--slate);outline:none;font-family:inherit" placeholder="Ask Amara a question...">
-          <div style="width:40px;height:40px;background:var(--espresso);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" onclick="cToast('📨 Question submitted! Amara will answer shortly.')"><span style="color:#fff;font-size:16px">↑</span></div>
-        </div>
-
-        <div style="padding:12px 20px;font-size:10px;color:var(--tan);text-align:center;line-height:1.5">This Q&A connects you directly with the farmer who grew your coffee. All messages are moderated by Coda.</div>
-
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item active" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
-        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
-      </nav>
-    </div>
-
-    <div class="toast" id="c-toast"></div>
   </div>
-</div>
-
-<!-- ══ FARMER EDITION ════════════════════════════════════ -->
-<div class="device-wrap">
-  <div class="device" id="dev-farmer" style="display:none">
-    <div class="status-bar farmer"><span class="status-time">9:41</span><span>Coda Farmer</span><span>●●●</span></div>
-
-    <!-- FARMER HOME -->
-    <div id="f-home" class="screen active">
-      <div class="scroll-body">
-        <div class="hero-bar farmer">
-          <div class="eyebrow f">Farmer Edition</div>
-          <div class="hero-title">Welcome back,<br>Amara 👩🏾</div>
-          <div class="hero-sub f">Your farm · Kampala, Uganda</div>
-          <div class="f-cta" onclick="fGo('upload')">
-            <div class="f-cta-ico">📸</div>
-            <div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Post a farm update</div><div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Share photos or harvest news</div></div>
-            <div style="font-size:20px;color:rgba(255,255,255,.6)">›</div>
-          </div>
-        </div>
-        <div class="sec-label">Your latest stats</div>
-        <div class="stat-grid">
-          <div class="stat-tile"><div class="stat-num sage">86.2</div><div class="stat-lbl">Latest cupping score</div></div>
-          <div class="stat-tile"><div class="stat-num sage">1.2k</div><div class="stat-lbl">Consumer supporters</div></div>
-          <div class="stat-tile"><div class="stat-num sage">3×</div><div class="stat-lbl">Premium received</div></div>
-          <div class="stat-tile"><div class="stat-num sage">#4</div><div class="stat-lbl">Co-op ranking this season</div></div>
-        </div>
-        <div class="sec-label">Your latest update</div>
-        <div class="update-card">
-          <div class="update-head"><div class="update-ava">👩🏾</div><div><div style="font-size:12px;font-weight:600;color:var(--espresso)">Amara Nakato</div><div style="font-size:10px;color:var(--tan);margin-top:1px">2 days ago</div></div></div>
-          <div class="update-img">🫘</div>
-          <div class="update-body">
-            <div class="update-text">First cherries of the March harvest are looking great! The new Bourbon seedlings have really made a difference. Hoping to beat last season's score.</div>
-            <div class="reactions">
-              <div class="reaction active">❤️ 847</div>
-              <div class="reaction">💬 23</div>
-              <div class="reaction" onclick="fToast('Shared with your followers!')">🔗 Share</div>
-            </div>
-          </div>
-        </div>
-        <div class="sec-label">Community signals from consumers</div>
-        <div class="card" style="margin:0 16px 12px">
-          <div class="signal-item"><div class="signal-ico">❤️</div><div class="signal-text"><strong>Sarah K.</strong> sent you a thank-you note: "Your coffee is my morning ritual!"</div><div class="signal-time">1h ago</div></div>
-          <div class="signal-item"><div class="signal-ico">🌱</div><div class="signal-text"><strong>Mike T.</strong> started following your farm</div><div class="signal-time">3h ago</div></div>
-          <div class="signal-item"><div class="signal-ico">🗳️</div><div class="signal-text"><strong>847 consumers</strong> joined your "Support this harvest" campaign</div><div class="signal-time">Today</div></div>
-          <div class="signal-item"><div class="signal-ico">⭐</div><div class="signal-text"><strong>Coda update:</strong> Your beans were featured in the consumer Discover page this week</div><div class="signal-time">Yesterday</div></div>
-        </div>
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item active fnav" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
-        <div class="nav-item" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
-        <div class="nav-item" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
-      </nav>
+  <div class="sec-label">Current offerings</div>
+  <div class="bean-card" onclick="goScreen('reveal')">
+    <div class="bean-top"><div class="bean-flag">🇺🇬</div><div style="flex:1"><div class="bean-name">Great Lakes Washed</div><div class="bean-origin">Kampala, Uganda</div></div><div class="score-pill">86.2</div></div>
+    <div class="flavor-bars">
+      <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:78%"></div></div></div>
+      <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:62%"></div></div></div>
+      <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:85%"></div></div></div>
     </div>
-
-    <!-- FARMER UPLOAD -->
-    <div id="f-upload" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar farmer"><div class="back-row" onclick="fGo('home')"><div class="back-btn f">‹</div><div class="back-title">Post update</div></div></div>
-        <div class="sec-label">Share with your community</div>
-        <div class="upload-btn" onclick="fToast('📸 Camera opened — take a photo of your farm!')"><div class="upload-ico">📸</div><div><div class="upload-title">Add photo or video</div><div class="upload-sub">Show your harvest progress</div></div></div>
-        <div class="upload-btn" onclick="fToast('📊 Quality data attached from last Bext360 scan')"><div class="upload-ico">📊</div><div><div class="upload-title">Attach quality data</div><div class="upload-sub">Share your latest cupping score</div></div></div>
-        <div class="upload-btn" onclick="fToast('💬 Challenge posted — Coda team will respond shortly')"><div class="upload-ico">💬</div><div><div class="upload-title">Share a challenge</div><div class="upload-sub">Ask for advice or report a problem</div></div></div>
-        <div style="margin:0 20px"><textarea style="width:100%;min-height:90px;background:var(--sand);border:none;border-radius:var(--r-sm);padding:10px 12px;font-size:13px;color:var(--slate);resize:none;outline:none;font-family:inherit" placeholder="Write an update for your followers..."></textarea></div>
-        <div class="primary-btn sage" style="margin-top:10px" onclick="fToast('✓ Update posted! 1.2k followers will see this.')">Post update</div>
-        <div style="height:16px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
-        <div class="nav-item active fnav" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
-        <div class="nav-item" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
-      </nav>
-    </div>
-
-    <!-- FARMER LEARN -->
-    <div id="f-learn" class="screen">
-      <div class="scroll-body">
-        <div class="hero-bar farmer"><div class="back-row" onclick="fGo('home')"><div class="back-btn f">‹</div><div class="back-title">Learn</div></div></div>
-        <div class="sec-label">Your quality feedback</div>
-        <div class="card" style="margin:0 16px 12px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--sage);margin-bottom:6px">Coda quality feedback — March 2025</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Your score of 86.2 is excellent. To reach 87+, consider reducing fermentation from 72hr to 60hr and testing sorting by density before milling.</div></div>
-        <div class="sec-label">Educational content</div>
-        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">🌱</div><div><div class="edu-title">Improving bean density sorting</div><div class="edu-sub">5 min read · Intermediate</div></div></div>
-        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">💧</div><div><div class="edu-title">Optimizing fermentation time</div><div class="edu-sub">4 min read · Advanced</div></div></div>
-        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">☀️</div><div><div class="edu-title">Raised-bed drying best practices</div><div class="edu-sub">6 min read · Beginner</div></div></div>
-        <div class="edu-card" onclick="fToast('Opening article...')"><div class="edu-ico">🌍</div><div><div class="edu-title">Sustainable farming &amp; B Corp standards</div><div class="edu-sub">8 min read · All levels</div></div></div>
-        <div class="sec-label">Market updates from Coda</div>
-        <div class="card" style="margin:0 16px 12px;padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--latte);margin-bottom:4px">April 2025 market update</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Specialty coffee demand is up 12% in Colorado this quarter. Scores of 86+ are getting 3.2× premium. Your current score qualifies. Maintain your practices.</div></div>
-        <div style="height:14px"></div>
-      </div>
-      <nav class="bottom-nav">
-        <div class="nav-item" onclick="fTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><div class="nav-label">Home</div></div>
-        <div class="nav-item" onclick="fTab('upload')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="nav-label">Post</div></div>
-        <div class="nav-item active fnav" onclick="fTab('learn')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><div class="nav-label">Learn</div></div>
-      </nav>
-    </div>
-
-    <div class="toast" id="f-toast" style="background:var(--sage)"></div>
   </div>
-</div>
+  <div class="bean-card">
+    <div class="bean-top"><div class="bean-flag">🇧🇷</div><div style="flex:1"><div class="bean-name">AFASA Natural</div><div class="bean-origin">Minas Gerais, Brazil</div></div><div class="score-pill">85.5</div></div>
+    <div class="flavor-bars">
+      <div class="flavor-row"><div class="flavor-lbl">Brightness</div><div class="flavor-track"><div class="flavor-fill" style="width:52%"></div></div></div>
+      <div class="flavor-row"><div class="flavor-lbl">Body</div><div class="flavor-track"><div class="flavor-fill" style="width:88%"></div></div></div>
+      <div class="flavor-row"><div class="flavor-lbl">Sweetness</div><div class="flavor-track"><div class="flavor-fill" style="width:91%"></div></div></div>
+    </div>
+  </div>
+  <div class="sec-label">Stories from the farm</div>
+  <div class="story-card" onclick="goScreen('story')">
+    <div class="story-img"><div style="font-size:24px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · Feb 2025</div></div>
+    <div class="story-body"><div class="story-title">How Amara tripled her yield in two seasons</div><div class="story-desc">After joining Farm2Cup, she switched bean varieties and adjusted her drying schedule.</div></div>
+  </div>
+</div></div></div>
+
+<!-- SCAN -->
+<div id="s-scan" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('home')"><div class="back-btn">‹</div><div class="back-title">Scan your bag</div></div></div>
+  <div class="scan-area"><div class="scan-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div style="font-size:13px;font-weight:600;color:var(--espresso)">Point camera at QR code</div><div style="font-size:11px;color:var(--slate)">Found on the bag label</div></div>
+  <div class="or-row"><div class="or-line"></div><div class="or-text">or enter batch code</div><div class="or-line"></div></div>
+  <input class="batch-input" type="text" value="UG-2025-0314">
+  <div class="primary-btn" onclick="goScreen('reveal')">Find my coffee →</div>
+  <div class="sec-label" style="margin-top:8px">Recent scans</div>
+  <div class="card">
+    <div class="recent-row" onclick="goScreen('reveal')"><div class="rdot"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">Great Lakes Washed · Uganda</div><div style="font-size:11px;color:var(--tan)">Today</div></div>
+    <div class="recent-row"><div class="rdot" style="background:var(--tan)"></div><div style="flex:1;font-size:13px;font-weight:500;color:var(--espresso)">AFASA Natural · Brazil</div><div style="font-size:11px;color:var(--tan)">3 days ago</div></div>
+  </div>
+</div></div></div>
+
+<!-- REVEAL -->
+<div id="s-reveal" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('scan')"><div class="back-btn">‹</div><div class="back-title">Meet the farmer</div><div class="back-tag">UG-2025-0314</div></div></div>
+  <div class="reveal-wrap">
+    <div class="farmer-avatar">👩🏾</div>
+    <div class="farmer-name">Amara Nakato</div>
+    <div class="farmer-loc">Kampala, Uganda · Farm2Cup since 2022</div>
+    <div class="pay-box"><div class="pay-title">✓ Payment confirmed — Bext360 blockchain</div><div class="pay-val">Paid 3× commodity rate · March 14, 2025</div></div>
+    <div class="score-row"><div class="score-num">86.2</div><div><div class="score-lbl">Cupping score — Specialty Grade</div><div class="score-sub">80+ = Specialty · Her best harvest yet</div></div></div>
+    <div class="farmer-story">Amara has grown coffee on her 1.2 acres for over a decade. After joining Farm2Cup, she switched to Bourbon varieties and improved her drying process. Her score rose from 82 to 86+ in two seasons — and her income more than doubled.</div>
+    <div class="sup-bar"><div class="sup-title">Send Amara your support</div><div class="sup-btns">
+      <div class="sup-btn" id="s-like" onclick="tapSup('s-like','❤️','1.2k')"><div class="sup-ico">❤️</div><div>1.2k</div></div>
+      <div class="sup-btn" id="s-msg" onclick="tapSup('s-msg','💬','Sent!')"><div class="sup-ico">💬</div><div>Message</div></div>
+      <div class="sup-btn" id="s-follow" onclick="tapSup('s-follow','🌱','Following')"><div class="sup-ico">🌱</div><div>Follow</div></div>
+      <div class="sup-btn" id="s-share" onclick="tapSup('s-share','🔗','Copied!')"><div class="sup-ico">🔗</div><div>Share</div></div>
+    </div></div>
+    <div class="moat-badge"><span class="moat-strong">This is not a marketing claim.</span> Machine-verified Bext360 blockchain record — cannot be altered.</div>
+    <div class="outline-btn" onclick="goScreen('journey')">See full bean journey →</div>
+  </div>
+</div></div></div>
+
+<!-- JOURNEY -->
+<div id="s-journey" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('reveal')"><div class="back-btn">‹</div><div class="back-title">Bean journey</div><div class="back-tag">Great Lakes Washed</div></div></div>
+  <div class="batch-meta">Batch <span>UG-2025-0314</span> · <span>Blockchain verified</span></div>
+  <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">🌱</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Harvested</div><div class="step-detail">Amara Nakato · 1.2 acres · 1,650m · Bourbon variety</div><div class="step-time">March 14, 2025</div><div class="step-ok">✓ Bext360 verified · 86.2</div></div></div>
+  <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">💧</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Washed &amp; dried</div><div class="step-detail">Great Lakes Coffee · Kampala · 72hr ferment · 18-day dry</div><div class="step-time">March 18–25, 2025</div><div class="step-ok">✓ Blockchain record</div></div></div>
+  <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico done">📦</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Milled &amp; exported</div><div class="step-detail">Entebbe → Denver, CO · GrainPro sealed</div><div class="step-time">April 2, 2025</div><div class="step-ok">✓ Shipping record</div></div></div>
+  <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico inprogress">🔥</div><div class="step-vline"></div></div><div class="step-body"><div class="step-title">Roasted in Denver</div><div class="step-detail">Coda HQ · Tim Thwaites · Medium roast</div><div class="step-time">April 19, 2025</div><div class="step-prog">In progress</div></div></div>
+  <div class="chain-step"><div class="step-ico-wrap"><div class="step-ico pending">☕</div></div><div class="step-body" style="opacity:.4"><div class="step-title">In your cup</div><div class="step-detail">Coda retail store · Denver, CO</div></div></div>
+  <div class="pay-summary"><div style="font-size:11px;color:var(--tan);margin-bottom:2px">Farmer payment</div><div style="font-size:14px;font-weight:700;color:var(--espresso)">3× commodity rate paid</div><div style="font-size:10px;color:var(--sage);margin-top:2px">Instant · Bext360 receipt · March 14, 2025</div></div>
+  <div class="primary-btn" style="margin-top:8px" onclick="goTab('impact')">See your impact →</div>
+</div></div></div>
+
+<!-- COMMUNITY -->
+<div id="s-community" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer">
+    <div class="eyebrow">Farm · Roast · Sip · Share</div>
+    <div class="hero-title">Community</div>
+    <div class="hero-sub">Conversations between farmers &amp; coffee lovers</div>
+  </div>
+  <div class="comm-filter-bar">
+    <div class="comm-filter active" onclick="commFilter(this)">All</div>
+    <div class="comm-filter" onclick="commFilter(this)">Farm updates</div>
+    <div class="comm-filter" onclick="commFilter(this)">Discussions</div>
+    <div class="comm-filter" onclick="commFilter(this)">Q&A</div>
+  </div>
+  <div class="comm-compose" onclick="showToast('✍️ Share a brew tip or ask a question!')">
+    <div class="comm-compose-ava">🙋</div>
+    <div class="comm-compose-text">Share a thought, brew tip, or question...</div>
+    <div style="font-size:18px;color:var(--latte)">📸</div>
+  </div>
+  <div class="comm-ama-card" onclick="goScreen('ama')">
+    <div class="comm-ama-head"><div class="comm-live-dot"></div><div style="font-size:13px;font-weight:700;color:#fff;flex:1">Live Q&A with Amara Nakato</div><div style="font-size:10px;color:var(--latte-lt)">42 watching</div></div>
+    <div class="comm-ama-body"><div style="font-size:11px;color:var(--slate);margin-bottom:6px">Ask Amara anything about her farm, process, or life in Kampala.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">🌱 Growing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">💧 Processing</div><div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">☕ Tasting</div></div></div>
+  </div>
+  <div class="sec-label">Latest posts</div>
+  <div class="comm-post">
+    <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👩🏾</div><div style="flex:1"><div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Kampala, Uganda · 2h ago</div></div></div>
+    <div class="comm-post-img" style="background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%)">🫘</div>
+    <div class="comm-post-body"><div class="comm-post-text">First cherries of the March harvest! The Bourbon seedlings are producing beautiful red cherries this year. Can't wait for the cupping results 🤞</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
+    <div class="comm-post-actions"><div class="comm-action liked" id="ca-1" onclick="toggleLike('ca-1')"><span class="comm-action-ico">❤️</span> 234</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 18</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+  </div>
+  <div class="comm-post">
+    <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👨🏻</div><div style="flex:1"><div class="comm-post-name">Jake R. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Denver, CO · 5h ago</div></div></div>
+    <div class="comm-post-body"><div class="comm-post-text">Just brewed Amara's Great Lakes Washed as a V60 pour-over — the citrus notes are incredible this batch. Easily my favorite morning cup this month. Anyone else tried a longer bloom time with this one?</div><div class="comm-post-origin" onclick="event.stopPropagation();goScreen('reveal')">🇺🇬 Great Lakes Washed · 86.2</div></div>
+    <div class="comm-post-actions"><div class="comm-action" id="ca-2" onclick="toggleLike('ca-2')"><span class="comm-action-ico">🤍</span> 47</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 12</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+  </div>
+  <div class="comm-post">
+    <div class="comm-post-head"><div class="comm-post-ava farmer-ava">👨🏽</div><div style="flex:1"><div class="comm-post-name">Carlos Mendes <span class="comm-badge-tag farmer-tag">Farmer</span></div><div class="comm-post-meta">Minas Gerais, Brazil · 8h ago</div></div></div>
+    <div class="comm-post-img" style="background:linear-gradient(135deg,#BA7517 0%,#8D6543 100%)">☀️</div>
+    <div class="comm-post-body"><div class="comm-post-text">Experimenting with a new 24-day natural drying process on raised beds. The extended time should bring out more chocolate and berry sweetness. Will share cupping results next week!</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
+    <div class="comm-post-actions"><div class="comm-action" id="ca-3" onclick="toggleLike('ca-3')"><span class="comm-action-ico">🤍</span> 89</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 31</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+  </div>
+  <div class="sec-label">Trending discussions</div>
+  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">What's the best brew method for high-altitude washed beans?</div><div class="comm-thread-preview">Started by Sarah K. — "I've been experimenting with my Chemex vs V60..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>24</span></div><div class="comm-thread-stat">❤️ <span>56</span></div><div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div></div></div>
+  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">Farmer Q: What flavor notes do you taste in your own coffee?</div><div class="comm-thread-preview">Amara answers — "Honestly I taste red fruit and honey..."</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>41</span></div><div class="comm-thread-stat">❤️ <span>128</span></div><div class="comm-thread-stat" style="margin-left:auto">⭐ Staff pick</div></div></div>
+  <div class="comm-thread-card" onclick="showToast('Opening thread...')"><div class="comm-thread-title">How does blockchain verification actually work?</div><div class="comm-thread-preview">Tim from Coda explains the Bext360 process...</div><div class="comm-thread-foot"><div class="comm-thread-stat">💬 <span>17</span></div><div class="comm-thread-stat">❤️ <span>93</span></div><div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div></div></div>
+  <div class="comm-post">
+    <div class="comm-post-head"><div class="comm-post-ava consumer-ava">👩🏼</div><div style="flex:1"><div class="comm-post-name">Maria L. <span class="comm-badge-tag consumer-tag">Sipper</span></div><div class="comm-post-meta">Boulder, CO · 1d ago</div></div></div>
+    <div class="comm-post-body"><div class="comm-post-text">Gave Coda's AFASA Natural to my parents who "only drink Folgers." They couldn't believe coffee could taste like this. My dad asked for Carlos's name so he could thank him. ❤️</div><div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div></div>
+    <div class="comm-post-actions"><div class="comm-action liked" id="ca-4" onclick="toggleLike('ca-4')"><span class="comm-action-ico">❤️</span> 312</div><div class="comm-action" onclick="showToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 45</div><div class="comm-action" onclick="showToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div></div>
+  </div>
+</div></div></div>
+
+<!-- AMA -->
+<div id="s-ama" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('community')"><div class="back-btn">‹</div><div class="back-title">Live Q&A</div><div class="back-tag"><span class="comm-live-dot" style="margin-right:4px"></span> Live</div></div></div>
+  <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--white);border-bottom:1px solid var(--sand)">
+    <div style="width:48px;height:48px;border-radius:50%;background:var(--sage-lt);border:2px solid var(--sage);display:flex;align-items:center;justify-content:center;font-size:24px">👩🏾</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--espresso)">Amara Nakato</div><div style="font-size:11px;color:var(--slate);margin-top:1px">Coffee farmer · Kampala, Uganda</div></div>
+    <div style="font-size:10px;color:var(--sage);font-weight:600;background:var(--sage-lt);padding:4px 10px;border-radius:12px">42 watching</div>
+  </div>
+  <div class="sec-label">Questions & answers</div>
+  <div class="comm-ama-card" style="border-color:var(--sand);cursor:default">
+    <div class="comm-ama-body" style="padding:0">
+      <div class="comm-ama-q"><strong>Sarah K.:</strong> What time do you wake up to start picking?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">I'm usually in the field by 6am. The mornings are cool and the cherries are firmest then.</span></div>
+      <div class="comm-ama-q"><strong>Jake R.:</strong> What does your coffee taste like to YOU?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">My daughter says chocolate. I taste honey and red berries. But I'm biased 😄</span></div>
+      <div class="comm-ama-q"><strong>Maria L.:</strong> Has the premium pay changed your daily life?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">Yes — my daughter is now in a better school. I also bought new drying beds.</span></div>
+      <div class="comm-ama-q" style="opacity:.5"><strong>Mike T.:</strong> How do you decide when cherries are ripe enough?<br><span style="font-size:10px;color:var(--tan);display:block;margin-top:3px">⏳ Waiting for Amara's answer...</span></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;padding:0 16px;">
+    <input style="flex:1;background:var(--sand);border:none;border-radius:var(--r-md);padding:12px 14px;font-size:13px;color:var(--slate);outline:none;font-family:inherit" placeholder="Ask Amara a question...">
+    <div style="width:40px;height:40px;background:var(--espresso);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" onclick="showToast('📨 Question submitted!')"><span style="color:#fff;font-size:16px">↑</span></div>
+  </div>
+  <div style="padding:12px 20px;font-size:10px;color:var(--tan);text-align:center">This Q&A connects you directly with the farmer. All messages moderated by Coda.</div>
+</div></div></div>
+
+<!-- IMPACT -->
+<div id="s-impact" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="impact-hero consumer"><div style="font-size:17px;font-weight:700;color:#fff">Your impact</div><div style="font-size:11px;color:var(--latte-lt);margin-top:3px">Every purchase adds up</div></div>
+  <div class="sec-label">Your footprint</div>
+  <div class="stat-grid">
+    <div class="stat-tile"><div class="stat-num">4</div><div class="stat-lbl">Bags purchased</div></div>
+    <div class="stat-tile"><div class="stat-num">2</div><div class="stat-lbl">Farmers supported</div></div>
+    <div class="stat-tile"><div class="stat-num">3×</div><div class="stat-lbl">Avg. premium paid</div></div>
+    <div class="stat-tile"><div class="stat-num" style="font-size:14px;line-height:1.3">Uganda<br>Brazil</div><div class="stat-lbl">Origins</div></div>
+  </div>
+  <div class="sec-label">Your badges</div>
+  <div class="badge-grid">
+    <div class="badge-tile earned"><div class="badge-ico">🇺🇬</div><div class="badge-name">Uganda Explorer</div><div class="badge-status earned">Earned</div></div>
+    <div class="badge-tile earned"><div class="badge-ico">❤️</div><div class="badge-name">First Support</div><div class="badge-status earned">Earned</div></div>
+    <div class="badge-tile"><div class="badge-ico">🌍</div><div class="badge-name">Globe Trotter</div><div class="badge-status">3 origins needed</div></div>
+    <div class="badge-tile"><div class="badge-ico">🏅</div><div class="badge-name">Campaign Hero</div><div class="badge-status">Join a campaign</div></div>
+    <div class="badge-tile earned"><div class="badge-ico">🇧🇷</div><div class="badge-name">Brazil Explorer</div><div class="badge-status earned">Earned</div></div>
+    <div class="badge-tile"><div class="badge-ico">⭐</div><div class="badge-name">Loyal Sipper</div><div class="badge-status">10 bags needed</div></div>
+  </div>
+  <div class="sec-label">Farmers you've supported</div>
+  <div class="card">
+    <div class="chip" onclick="goScreen('reveal')"><div class="chip-ava">👩🏾</div><div><div class="chip-name">Amara Nakato</div><div class="chip-detail">Uganda · 2 bags · Following</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
+    <div class="chip"><div class="chip-ava">👨🏽</div><div><div class="chip-name">Carlos Mendes</div><div class="chip-detail">Brazil · 2 bags</div></div><div style="margin-left:auto;font-size:18px;color:var(--tan)">›</div></div>
+  </div>
+  <div class="share-cta" onclick="showToast('Link copied! Share your impact.')"><div style="font-size:22px">🌱</div><div><div style="font-size:13px;font-weight:600;color:var(--sage)">Share your impact</div><div style="font-size:11px;color:#3B6D11;margin-top:1px">Let others know where their coffee comes from</div></div></div>
+</div></div></div>
+
+<!-- CAMPAIGNS -->
+<div id="s-campaigns" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('home')"><div class="back-btn">‹</div><div class="back-title">Campaigns</div></div></div>
+  <div class="sec-label">Active now</div>
+  <div class="camp-card"><div class="camp-head"><span style="font-size:14px">🫘</span><div class="camp-lbl">Support this harvest</div></div><div class="camp-body"><div class="camp-title">Uganda Great Lakes — March harvest</div><div class="camp-desc">Help Amara reach her 2025 quality upgrade goal.</div><div class="cp-row"><div class="cp-lbl">Community support</div><div class="cp-val">847 / 1,000</div></div><div class="cp-track"><div class="cp-fill" style="width:84.7%"></div></div><button class="camp-btn" onclick="joinCamp(this)">Join this campaign</button></div></div>
+  <div class="camp-card" style="border-color:var(--sage)"><div class="camp-head" style="background:var(--sage)"><span style="font-size:14px">🌱</span><div class="camp-lbl">Follow this farm</div></div><div class="camp-body"><div class="camp-title">Carlos Mendes — Brazil AFASA</div><div class="camp-desc">Carlos is experimenting with new drying methods.</div><div class="cp-row"><div class="cp-lbl">Followers</div><div class="cp-val" style="color:var(--sage)">312 / 500</div></div><div class="cp-track"><div class="cp-fill" style="width:62.4%;background:var(--sage)"></div></div><button class="camp-btn" style="background:var(--sage)" onclick="showToast('🌱 Following Carlos\'s farm!')">Follow Carlos's farm</button></div></div>
+</div></div></div>
+
+<!-- STORY -->
+<div id="s-story" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar consumer"><div class="back-row" onclick="goScreen('home')"><div class="back-btn">‹</div><div class="back-title">Farm story</div></div></div>
+  <div class="story-img" style="height:160px;margin:0;border-radius:0"><div style="font-size:36px">☕</div><div style="font-size:9px;color:rgba(255,255,255,.65)">Kampala, Uganda · February 2025</div></div>
+  <div style="padding:16px 0">
+    <div style="font-size:18px;font-weight:700;color:var(--espresso);line-height:1.3;margin-bottom:12px">How Amara tripled her yield in two seasons</div>
+    <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:10px">When Amara Nakato first heard about Coda's Farm2Cup program, she was skeptical. She had been growing coffee the same way for ten years.</div>
+    <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:10px">The answer came from the bextmachine at her cooperative. For the first time, she could see a score: 82.4. And she could see that her neighbor's beans scored 85.1.</div>
+    <div style="font-size:13px;color:var(--slate);line-height:1.7;margin-bottom:14px">She switched to Bourbon variety seedlings and adjusted her drying from 12 to 18 days. By the next harvest, her score was 86.2 — and her income had more than doubled.</div>
+    <div style="background:var(--sand);border-radius:var(--r-md);padding:12px 14px;margin-bottom:14px"><div style="font-size:13px;color:var(--slate);line-height:1.6;font-style:italic">"The machine doesn't lie. It just tells you the number."</div><div style="font-size:11px;font-weight:600;color:var(--latte);margin-top:6px">— Amara Nakato</div></div>
+    <div class="primary-btn" style="margin:0;width:100%" onclick="goScreen('reveal')">Meet Amara →</div>
+  </div>
+</div></div></div>
+
+<!-- ═══ FARMER SCREENS ═══ -->
+
+<div id="s-f-home" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar farmer">
+    <div class="eyebrow f">Farmer Edition</div>
+    <div class="hero-title">Welcome back,<br>Amara 👩🏾</div>
+    <div class="hero-sub f">Your farm · Kampala, Uganda</div>
+    <div class="f-cta" onclick="goScreen('f-upload')"><div class="f-cta-ico">📸</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">Post a farm update</div><div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Share photos or harvest news</div></div><div style="font-size:20px;color:rgba(255,255,255,.6)">›</div></div>
+  </div>
+  <div class="edition-toggle"><button class="ed-btn" onclick="setEd('consumer')">☕ Consumer</button><button class="ed-btn farmer active" onclick="setEd('farmer')">🌱 Farmer</button></div>
+  <div class="sec-label">Your latest stats</div>
+  <div class="stat-grid">
+    <div class="stat-tile"><div class="stat-num sage">86.2</div><div class="stat-lbl">Latest cupping score</div></div>
+    <div class="stat-tile"><div class="stat-num sage">1.2k</div><div class="stat-lbl">Consumer supporters</div></div>
+    <div class="stat-tile"><div class="stat-num sage">3×</div><div class="stat-lbl">Premium received</div></div>
+    <div class="stat-tile"><div class="stat-num sage">#4</div><div class="stat-lbl">Co-op ranking</div></div>
+  </div>
+  <div class="sec-label">Your latest update</div>
+  <div class="update-card"><div class="update-head"><div class="update-ava">👩🏾</div><div><div style="font-size:12px;font-weight:600;color:var(--espresso)">Amara Nakato</div><div style="font-size:10px;color:var(--tan);margin-top:1px">2 days ago</div></div></div><div class="update-img">🫘</div><div class="update-body"><div class="update-text">First cherries of the March harvest are looking great! The new Bourbon seedlings have really made a difference.</div><div class="reactions"><div class="reaction active">❤️ 847</div><div class="reaction">💬 23</div><div class="reaction" onclick="showToast('Shared!','sage')">🔗 Share</div></div></div></div>
+  <div class="sec-label">Community signals</div>
+  <div class="card">
+    <div class="signal-item"><div class="signal-ico">❤️</div><div class="signal-text"><strong>Sarah K.</strong> sent a thank-you: "Your coffee is my morning ritual!"</div><div class="signal-time">1h</div></div>
+    <div class="signal-item"><div class="signal-ico">🌱</div><div class="signal-text"><strong>Mike T.</strong> started following your farm</div><div class="signal-time">3h</div></div>
+    <div class="signal-item"><div class="signal-ico">🗳️</div><div class="signal-text"><strong>847 consumers</strong> joined your campaign</div><div class="signal-time">Today</div></div>
+    <div class="signal-item"><div class="signal-ico">⭐</div><div class="signal-text"><strong>Coda:</strong> Featured on Discover this week</div><div class="signal-time">Yesterday</div></div>
+  </div>
+</div></div></div>
+
+<div id="s-f-upload" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar farmer"><div class="back-row" onclick="goScreen('f-home')"><div class="back-btn f">‹</div><div class="back-title">Post update</div></div></div>
+  <div class="sec-label">Share with your community</div>
+  <div class="upload-btn" onclick="showToast('📸 Camera opened!','sage')"><div class="upload-ico">📸</div><div><div class="upload-title">Add photo or video</div><div class="upload-sub">Show your harvest progress</div></div></div>
+  <div class="upload-btn" onclick="showToast('📊 Quality data attached!','sage')"><div class="upload-ico">📊</div><div><div class="upload-title">Attach quality data</div><div class="upload-sub">Share your latest cupping score</div></div></div>
+  <div class="upload-btn" onclick="showToast('💬 Challenge posted!','sage')"><div class="upload-ico">💬</div><div><div class="upload-title">Share a challenge</div><div class="upload-sub">Ask for advice or report a problem</div></div></div>
+  <div style="padding:0 16px"><textarea style="width:100%;min-height:100px;background:var(--sand);border:none;border-radius:var(--r-sm);padding:12px;font-size:13px;color:var(--slate);resize:none;outline:none;font-family:inherit" placeholder="Write an update for your followers..."></textarea></div>
+  <div class="primary-btn sage" onclick="showToast('✓ Posted! 1.2k followers will see this.','sage')">Post update</div>
+</div></div></div>
+
+<div id="s-f-learn" class="screen"><div class="scroll-body"><div class="inner">
+  <div class="hero-bar farmer"><div class="back-row" onclick="goScreen('f-home')"><div class="back-btn f">‹</div><div class="back-title">Learn</div></div></div>
+  <div class="sec-label">Your quality feedback</div>
+  <div class="card" style="padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--sage);margin-bottom:6px">Coda feedback — March 2025</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Score of 86.2 is excellent. To reach 87+, try reducing fermentation from 72hr to 60hr and testing density sorting before milling.</div></div>
+  <div class="sec-label">Educational content</div>
+  <div class="edu-card" onclick="showToast('Opening...','sage')"><div class="edu-ico">🌱</div><div><div class="edu-title">Improving bean density sorting</div><div class="edu-sub">5 min · Intermediate</div></div></div>
+  <div class="edu-card" onclick="showToast('Opening...','sage')"><div class="edu-ico">💧</div><div><div class="edu-title">Optimizing fermentation time</div><div class="edu-sub">4 min · Advanced</div></div></div>
+  <div class="edu-card" onclick="showToast('Opening...','sage')"><div class="edu-ico">☀️</div><div><div class="edu-title">Raised-bed drying best practices</div><div class="edu-sub">6 min · Beginner</div></div></div>
+  <div class="edu-card" onclick="showToast('Opening...','sage')"><div class="edu-ico">🌍</div><div><div class="edu-title">Sustainable farming &amp; B Corp</div><div class="edu-sub">8 min · All levels</div></div></div>
+  <div class="sec-label">Market updates</div>
+  <div class="card" style="padding:12px 14px"><div style="font-size:11px;font-weight:700;color:var(--latte);margin-bottom:4px">April 2025</div><div style="font-size:12px;color:var(--slate);line-height:1.6">Specialty demand up 12% in Colorado. Scores 86+ getting 3.2× premium. Your score qualifies — maintain practices.</div></div>
+</div></div></div>
+
+</div><!-- end .main -->
+</div><!-- end .app-shell -->
+
+<div class="toast" id="g-toast"></div>
 
 <script>
-let curEd='consumer';
-function setEd(ed){
-  curEd=ed;
-  document.getElementById('dev-consumer').style.display=ed==='consumer'?'block':'none';
-  document.getElementById('dev-farmer').style.display=ed==='farmer'?'block':'none';
-  document.querySelectorAll('.ed-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.ed-btn').forEach(b=>{if((ed==='consumer'&&b.textContent.includes('Consumer'))||(ed==='farmer'&&b.textContent.includes('Farmer')))b.classList.add('active');});
+let edition = 'consumer';
+const ALL_SCREENS = document.querySelectorAll('.screen');
+
+function goScreen(id) {
+  ALL_SCREENS.forEach(s => {
+    const isTarget = s.id === 's-' + id;
+    s.classList.toggle('active', isTarget);
+    if (isTarget) { const b = s.querySelector('.scroll-body'); if (b) b.scrollTop = 0; }
+  });
+  updateNavHighlight(id);
 }
-const CS=['home','scan','reveal','journey','impact','campaigns','story','community','ama'];
-function cGo(id){CS.forEach(s=>{const el=document.getElementById('c-'+s);if(el){el.classList.toggle('active',s===id);if(s===id){const b=el.querySelector('.scroll-body');if(b)b.scrollTop=0;}}});}
-function cTab(id){cGo(id);}
-const FS=['home','upload','learn'];
-function fGo(id){FS.forEach(s=>{const el=document.getElementById('f-'+s);if(el){el.classList.toggle('active',s===id);if(s===id){const b=el.querySelector('.scroll-body');if(b)b.scrollTop=0;}}});}
-function fTab(id){fGo(id);}
-function doToast(id,msg){const t=document.getElementById(id);t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
-function cToast(msg){doToast('c-toast',msg);}
-function fToast(msg){doToast('f-toast',msg);}
-function tapSup(id,ico,lbl){
-  const el=document.getElementById(id);
-  if(el.classList.contains('active')){el.classList.remove('active');return;}
+
+function goTab(id) { goScreen(id); }
+
+function updateNavHighlight(id) {
+  const tabMap = { home:'home', community:'community', impact:'impact', 'f-home':'f-home', 'f-upload':'f-upload', 'f-learn':'f-learn' };
+  const tab = tabMap[id];
+  if (!tab) return;
+  const isFarmer = edition === 'farmer';
+  // Mobile nav
+  const mobGroup = isFarmer ? 'mob-nav-farmer' : 'mob-nav-consumer';
+  document.querySelectorAll('#' + mobGroup + ' .nav-item').forEach(n => {
+    n.classList.remove('active', 'farmer-active');
+    if (n.dataset.tab === tab) n.classList.add(isFarmer ? 'farmer-active' : 'active');
+  });
+  // Sidebar nav
+  const sideGroup = isFarmer ? 'sidebar-nav-farmer' : 'sidebar-nav-consumer';
+  document.querySelectorAll('#' + sideGroup + ' .s-nav-item').forEach(n => {
+    n.classList.remove('active', 'farmer-active');
+    if (n.dataset.tab === tab) n.classList.add(isFarmer ? 'farmer-active' : 'active');
+  });
+}
+
+function setEd(ed) {
+  edition = ed;
+  document.getElementById('mob-nav-consumer').style.display = ed === 'consumer' ? '' : 'none';
+  document.getElementById('mob-nav-farmer').style.display = ed === 'farmer' ? '' : 'none';
+  document.getElementById('sidebar-nav-consumer').style.display = ed === 'consumer' ? '' : 'none';
+  document.getElementById('sidebar-nav-farmer').style.display = ed === 'farmer' ? '' : 'none';
+  document.getElementById('switch-label').textContent = ed === 'consumer' ? 'Switch to Farmer' : 'Switch to Consumer';
+  document.querySelectorAll('.sidebar-brand').forEach(b => {
+    b.innerHTML = ed === 'consumer' ? '<span class="sidebar-brand-ico">☕</span> Coda Coffee' : '<span class="sidebar-brand-ico">🌱</span> Coda Farmer';
+  });
+  document.querySelectorAll('.edition-toggle').forEach(tog => {
+    tog.querySelectorAll('.ed-btn').forEach(b => {
+      b.classList.remove('active');
+      if (ed === 'consumer' && !b.classList.contains('farmer')) b.classList.add('active');
+      if (ed === 'farmer' && b.classList.contains('farmer')) b.classList.add('active');
+    });
+  });
+  goScreen(ed === 'consumer' ? 'home' : 'f-home');
+}
+
+function toggleEdition() { setEd(edition === 'consumer' ? 'farmer' : 'consumer'); }
+
+let toastTimer;
+function showToast(msg, cls) {
+  const t = document.getElementById('g-toast');
+  t.textContent = msg;
+  t.className = 'toast' + (cls ? ' ' + cls : '');
+  clearTimeout(toastTimer);
+  requestAnimationFrame(() => t.classList.add('show'));
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function tapSup(id, ico, lbl) {
+  const el = document.getElementById(id);
+  if (el.classList.contains('active')) { el.classList.remove('active'); return; }
   el.classList.add('active');
-  el.querySelector('div:last-child').textContent=lbl;
-  const msgs={'s-like':'❤️ You liked Amara\'s farm!','s-follow':'🌱 You are now following Amara\'s farm!','s-share':'🔗 Link copied!','s-msg':'💬 Message sent to Amara!'};
-  cToast(msgs[id]||'Done!');
+  el.querySelector('div:last-child').textContent = lbl;
+  const msgs = { 's-like':'❤️ Liked!', 's-follow':'🌱 Following!', 's-share':'🔗 Copied!', 's-msg':'💬 Sent!' };
+  showToast(msgs[id] || 'Done!');
 }
-function joinCamp(btn,key){
-  btn.textContent='✓ Joined! Thank you';btn.style.background='var(--sage)';
-  if(key==='c2'){const b=document.getElementById('cp-bar2');const v=document.getElementById('cp-val2');if(b)b.style.width='85.7%';if(v)v.textContent='857 / 1,000';}
-  cToast('🫘 You joined the campaign! Amara will see your support.');
+function joinCamp(btn) { btn.textContent = '✓ Joined!'; btn.style.background = 'var(--sage)'; showToast('🫘 You joined the campaign!'); }
+function commFilter(el) { el.parentElement.querySelectorAll('.comm-filter').forEach(f => f.classList.remove('active')); el.classList.add('active'); showToast('Showing: ' + el.textContent); }
+function toggleLike(id) {
+  const el = document.getElementById(id);
+  if (el.classList.contains('liked')) { el.classList.remove('liked'); el.querySelector('.comm-action-ico').textContent = '🤍'; }
+  else { el.classList.add('liked'); el.querySelector('.comm-action-ico').textContent = '❤️'; showToast('❤️ Liked!'); }
 }
-function commFilter(el){
-  el.parentElement.querySelectorAll('.comm-filter').forEach(f=>f.classList.remove('active'));
-  el.classList.add('active');
-  cToast('Showing: '+el.textContent);
-}
-function toggleLike(id){
-  const el=document.getElementById(id);
-  if(el.classList.contains('liked')){
-    el.classList.remove('liked');
-    el.querySelector('.comm-action-ico').textContent='🤍';
-  }else{
-    el.classList.add('liked');
-    el.querySelector('.comm-action-ico').textContent='❤️';
-    cToast('❤️ Liked!');
-  }
-}
-document.addEventListener('keydown',e=>{
-  if(curEd==='consumer'){const m={'1':'home','2':'community','3':'impact','4':'scan','5':'reveal','6':'journey','7':'campaigns','8':'story','9':'ama'};if(m[e.key])cGo(m[e.key]);}
-  else{const m={'1':'home','2':'upload','3':'learn'};if(m[e.key])fGo(m[e.key]);}
-  if(e.key==='f')setEd('farmer');
-  if(e.key==='c')setEd('consumer');
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (edition === 'consumer') { const m = {'1':'home','2':'community','3':'impact','4':'scan','5':'reveal','6':'journey','7':'campaigns','8':'story','9':'ama'}; if(m[e.key]) goScreen(m[e.key]); }
+  else { const m = {'1':'f-home','2':'f-upload','3':'f-learn'}; if(m[e.key]) goScreen(m[e.key]); }
+  if (e.key === 'f') setEd('farmer');
+  if (e.key === 'c') setEd('consumer');
 });
 </script>
 </body>
