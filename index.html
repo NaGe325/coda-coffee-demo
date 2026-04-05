@@ -183,8 +183,9 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 .update-body{padding:10px 14px 12px;}
 .update-text{font-size:12px;color:var(--slate);line-height:1.55;}
 .reactions{display:flex;gap:8px;margin-top:8px;}
-.reaction{display:flex;align-items:center;gap:3px;background:var(--cream);border-radius:20px;padding:3px 9px;font-size:11px;color:var(--slate);cursor:pointer;border:1px solid var(--sand);}
+.reaction{display:flex;align-items:center;gap:3px;background:var(--cream);border-radius:20px;padding:3px 9px;font-size:11px;color:var(--slate);cursor:pointer;border:1px solid var(--sand);transition:all .15s;}
 .reaction.active{background:var(--sage-lt);color:var(--sage);border-color:var(--sage);}
+.reaction:active{transform:scale(.93);}
 .upload-btn{display:flex;align-items:center;gap:12px;margin:0 16px 10px;background:var(--white);border:2px dashed var(--sage);border-radius:var(--r-md);padding:14px;cursor:pointer;}
 .upload-ico{width:40px;height:40px;background:var(--sage-lt);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
 .upload-title{font-size:13px;font-weight:600;color:var(--sage);}
@@ -202,6 +203,56 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
 /* toast */
 .toast{position:absolute;bottom:96px;left:20px;right:20px;background:var(--espresso);color:#fff;border-radius:var(--r-md);padding:11px 16px;font-size:13px;font-weight:500;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;}
 .toast.show{opacity:1;}
+
+/* ═══ COMMUNITY TAB STYLES ═══ */
+.comm-filter-bar{display:flex;gap:6px;padding:12px 16px 6px;overflow-x:auto;}
+.comm-filter{padding:6px 14px;border-radius:20px;border:1px solid var(--sand);background:var(--white);font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;white-space:nowrap;transition:all .15s;}
+.comm-filter.active{background:var(--espresso);color:#fff;border-color:var(--espresso);}
+.comm-filter:active{transform:scale(.95);}
+
+.comm-compose{margin:10px 16px 6px;background:var(--white);border:1px solid var(--sand);border-radius:var(--r-md);padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.comm-compose:active{background:var(--cream);}
+.comm-compose-ava{width:32px;height:32px;border-radius:50%;background:var(--latte-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.comm-compose-text{font-size:12px;color:var(--tan);flex:1;}
+
+.comm-post{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;overflow:hidden;}
+.comm-post-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
+.comm-post-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.comm-post-ava.consumer-ava{background:var(--latte-lt);}
+.comm-post-ava.farmer-ava{background:var(--sage-lt);border:2px solid var(--sage);}
+.comm-post-name{font-size:12px;font-weight:600;color:var(--espresso);}
+.comm-post-meta{font-size:10px;color:var(--tan);margin-top:1px;display:flex;align-items:center;gap:4px;}
+.comm-badge-tag{font-size:8px;font-weight:700;padding:1px 6px;border-radius:10px;text-transform:uppercase;letter-spacing:.03em;}
+.comm-badge-tag.farmer-tag{background:var(--sage-lt);color:var(--sage);}
+.comm-badge-tag.consumer-tag{background:var(--amber-lt);color:var(--amber);}
+.comm-post-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:40px;}
+.comm-post-body{padding:8px 14px 6px;}
+.comm-post-text{font-size:12px;color:var(--slate);line-height:1.6;}
+.comm-post-origin{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 8px;background:var(--cream);border-radius:12px;font-size:10px;color:var(--latte);font-weight:600;cursor:pointer;}
+.comm-post-actions{display:flex;align-items:center;gap:0;padding:4px 6px 10px;border-top:1px solid var(--sand);margin:6px 14px 0 14px;padding-top:8px;}
+.comm-action{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:5px 0;font-size:11px;color:var(--tan);cursor:pointer;border-radius:var(--r-sm);transition:all .12s;}
+.comm-action:active{background:var(--cream);}
+.comm-action.liked{color:var(--latte);font-weight:600;}
+.comm-action-ico{font-size:14px;}
+
+.comm-thread-card{background:var(--white);border-radius:var(--r-md);border:1px solid var(--sand);margin:0 16px 10px;padding:12px 14px;cursor:pointer;}
+.comm-thread-card:active{background:var(--cream);}
+.comm-thread-title{font-size:13px;font-weight:600;color:var(--espresso);line-height:1.35;}
+.comm-thread-preview{font-size:11px;color:var(--slate);margin-top:3px;line-height:1.5;}
+.comm-thread-foot{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.comm-thread-stat{font-size:10px;color:var(--tan);display:flex;align-items:center;gap:3px;}
+.comm-thread-stat span{font-weight:600;color:var(--slate);}
+
+.comm-live-dot{width:6px;height:6px;border-radius:50%;background:#E53E3E;display:inline-block;animation:pulse-dot 1.4s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.3}}
+
+.comm-ama-card{background:var(--white);border-radius:var(--r-md);border:2px solid var(--latte);margin:0 16px 10px;overflow:hidden;cursor:pointer;}
+.comm-ama-card:active{opacity:.9;}
+.comm-ama-head{background:linear-gradient(135deg,var(--espresso),var(--latte));padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.comm-ama-body{padding:10px 14px 12px;}
+.comm-ama-q{font-size:12px;color:var(--slate);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--sand);}
+.comm-ama-q:last-child{border-bottom:none;padding-bottom:0;}
+.comm-ama-q strong{color:var(--espresso);}
 </style>
 </head>
 <body>
@@ -266,12 +317,12 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
 
-    <!-- SCAN -->
+    <!-- SCAN (accessible from hero CTA, not from nav) -->
     <div id="c-scan" class="screen">
       <div class="scroll-body">
         <div class="hero-bar consumer"><div class="back-row" onclick="cGo('home')"><div class="back-btn">‹</div><div class="back-title">Scan your bag</div></div></div>
@@ -287,7 +338,7 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -319,7 +370,7 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -340,7 +391,7 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item active" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -375,7 +426,7 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item active" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -409,7 +460,7 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -430,7 +481,223 @@ html,body{height:100%;background:#111;font-family:-apple-system,BlinkMacSystemFo
       </div>
       <nav class="bottom-nav">
         <div class="nav-item active" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
-        <div class="nav-item" onclick="cTab('scan')"><div class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 14h3M14 18v3M18 18h3v3"/></svg></div><div class="nav-label">Trace</div></div>
+        <div class="nav-item" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
+    </div>
+
+    <!-- ═══ COMMUNITY ═══ -->
+    <div id="c-community" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer">
+          <div class="eyebrow">Farm · Roast · Sip · Share</div>
+          <div class="hero-title">Community</div>
+          <div class="hero-sub">Conversations between farmers &amp; coffee lovers</div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="comm-filter-bar">
+          <div class="comm-filter active" onclick="commFilter(this)">All</div>
+          <div class="comm-filter" onclick="commFilter(this)">Farm updates</div>
+          <div class="comm-filter" onclick="commFilter(this)">Discussions</div>
+          <div class="comm-filter" onclick="commFilter(this)">Q&A</div>
+        </div>
+
+        <!-- Compose -->
+        <div class="comm-compose" onclick="cToast('✍️ Compose your post — share a brew tip or ask a question!')">
+          <div class="comm-compose-ava">🙋</div>
+          <div class="comm-compose-text">Share a thought, brew tip, or question...</div>
+          <div style="font-size:18px;color:var(--latte)">📸</div>
+        </div>
+
+        <!-- Live AMA card -->
+        <div class="comm-ama-card" onclick="cGo('ama')">
+          <div class="comm-ama-head">
+            <div class="comm-live-dot"></div>
+            <div style="font-size:13px;font-weight:700;color:#fff;flex:1">Live Q&A with Amara Nakato</div>
+            <div style="font-size:10px;color:var(--latte-lt)">42 watching</div>
+          </div>
+          <div class="comm-ama-body">
+            <div style="font-size:11px;color:var(--slate);margin-bottom:6px">Ask Amara anything about her farm, process, or life in Kampala.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">🌱 Growing</div>
+              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">💧 Processing</div>
+              <div style="font-size:10px;padding:3px 8px;background:var(--cream);border-radius:10px;color:var(--slate)">☕ Tasting</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-label">Latest posts</div>
+
+        <!-- Farmer post with image -->
+        <div class="comm-post">
+          <div class="comm-post-head">
+            <div class="comm-post-ava farmer-ava">👩🏾</div>
+            <div style="flex:1">
+              <div class="comm-post-name">Amara Nakato <span class="comm-badge-tag farmer-tag">Farmer</span></div>
+              <div class="comm-post-meta">Kampala, Uganda · 2h ago</div>
+            </div>
+          </div>
+          <div class="comm-post-img" style="background:linear-gradient(135deg,#5a8c3a 0%,#2D5A1A 100%)">🫘</div>
+          <div class="comm-post-body">
+            <div class="comm-post-text">First cherries of the March harvest! The Bourbon seedlings are producing beautiful red cherries this year. Can't wait for the cupping results 🤞</div>
+            <div class="comm-post-origin" onclick="event.stopPropagation();cGo('reveal')">🇺🇬 Great Lakes Washed · 86.2</div>
+          </div>
+          <div class="comm-post-actions">
+            <div class="comm-action liked" id="ca-1" onclick="toggleLike('ca-1')"><span class="comm-action-ico">❤️</span> 234</div>
+            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 18</div>
+            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
+          </div>
+        </div>
+
+        <!-- Consumer post -->
+        <div class="comm-post">
+          <div class="comm-post-head">
+            <div class="comm-post-ava consumer-ava">👨🏻</div>
+            <div style="flex:1">
+              <div class="comm-post-name">Jake R. <span class="comm-badge-tag consumer-tag">Sipper</span></div>
+              <div class="comm-post-meta">Denver, CO · 5h ago</div>
+            </div>
+          </div>
+          <div class="comm-post-body">
+            <div class="comm-post-text">Just brewed Amara's Great Lakes Washed as a V60 pour-over — the citrus notes are incredible this batch. Easily my favorite morning cup this month. Anyone else tried a longer bloom time with this one?</div>
+            <div class="comm-post-origin" onclick="event.stopPropagation();cGo('reveal')">🇺🇬 Great Lakes Washed · 86.2</div>
+          </div>
+          <div class="comm-post-actions">
+            <div class="comm-action" id="ca-2" onclick="toggleLike('ca-2')"><span class="comm-action-ico">🤍</span> 47</div>
+            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 12</div>
+            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
+          </div>
+        </div>
+
+        <!-- Farmer reply post -->
+        <div class="comm-post">
+          <div class="comm-post-head">
+            <div class="comm-post-ava farmer-ava">👨🏽</div>
+            <div style="flex:1">
+              <div class="comm-post-name">Carlos Mendes <span class="comm-badge-tag farmer-tag">Farmer</span></div>
+              <div class="comm-post-meta">Minas Gerais, Brazil · 8h ago</div>
+            </div>
+          </div>
+          <div class="comm-post-img" style="background:linear-gradient(135deg,#BA7517 0%,#8D6543 100%)">☀️</div>
+          <div class="comm-post-body">
+            <div class="comm-post-text">Experimenting with a new 24-day natural drying process on raised beds. The extended time should bring out more chocolate and berry sweetness. Will share cupping results next week!</div>
+            <div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div>
+          </div>
+          <div class="comm-post-actions">
+            <div class="comm-action" id="ca-3" onclick="toggleLike('ca-3')"><span class="comm-action-ico">🤍</span> 89</div>
+            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 31</div>
+            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
+          </div>
+        </div>
+
+        <div class="sec-label">Trending discussions</div>
+
+        <!-- Thread cards -->
+        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
+          <div class="comm-thread-title">What's the best brew method for high-altitude washed beans?</div>
+          <div class="comm-thread-preview">Started by Sarah K. — "I've been experimenting with my Chemex vs V60 for Amara's latest batch..."</div>
+          <div class="comm-thread-foot">
+            <div class="comm-thread-stat">💬 <span>24</span> replies</div>
+            <div class="comm-thread-stat">❤️ <span>56</span></div>
+            <div class="comm-thread-stat" style="margin-left:auto">🔥 Trending</div>
+          </div>
+        </div>
+
+        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
+          <div class="comm-thread-title">Farmer Q: What flavor notes do you taste in your own coffee?</div>
+          <div class="comm-thread-preview">Amara answers — "Honestly I taste red fruit and honey. But my daughter says it tastes like chocolate!"</div>
+          <div class="comm-thread-foot">
+            <div class="comm-thread-stat">💬 <span>41</span> replies</div>
+            <div class="comm-thread-stat">❤️ <span>128</span></div>
+            <div class="comm-thread-stat" style="margin-left:auto">⭐ Staff pick</div>
+          </div>
+        </div>
+
+        <div class="comm-thread-card" onclick="cToast('Opening thread...')">
+          <div class="comm-thread-title">How does blockchain verification actually work?</div>
+          <div class="comm-thread-preview">Tim from Coda explains the Bext360 process from cherry scan to final record...</div>
+          <div class="comm-thread-foot">
+            <div class="comm-thread-stat">💬 <span>17</span> replies</div>
+            <div class="comm-thread-stat">❤️ <span>93</span></div>
+            <div class="comm-thread-stat" style="margin-left:auto">📌 Pinned</div>
+          </div>
+        </div>
+
+        <!-- Consumer post 2 -->
+        <div class="comm-post">
+          <div class="comm-post-head">
+            <div class="comm-post-ava consumer-ava">👩🏼</div>
+            <div style="flex:1">
+              <div class="comm-post-name">Maria L. <span class="comm-badge-tag consumer-tag">Sipper</span></div>
+              <div class="comm-post-meta">Boulder, CO · 1d ago</div>
+            </div>
+          </div>
+          <div class="comm-post-body">
+            <div class="comm-post-text">Gave Coda's AFASA Natural to my parents who "only drink Folgers." They couldn't believe coffee could taste like this. My dad asked for Carlos's name so he could thank him. This is why traceability matters. ❤️</div>
+            <div class="comm-post-origin">🇧🇷 AFASA Natural · 85.5</div>
+          </div>
+          <div class="comm-post-actions">
+            <div class="comm-action liked" id="ca-4" onclick="toggleLike('ca-4')"><span class="comm-action-ico">❤️</span> 312</div>
+            <div class="comm-action" onclick="cToast('💬 Comments opened')"><span class="comm-action-ico">💬</span> 45</div>
+            <div class="comm-action" onclick="cToast('🔗 Link copied!')"><span class="comm-action-ico">🔗</span> Share</div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item active" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
+        <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
+      </nav>
+    </div>
+
+    <!-- ═══ AMA (Live Q&A detail) ═══ -->
+    <div id="c-ama" class="screen">
+      <div class="scroll-body">
+        <div class="hero-bar consumer">
+          <div class="back-row" onclick="cGo('community')">
+            <div class="back-btn">‹</div>
+            <div class="back-title">Live Q&A</div>
+            <div class="back-tag"><span class="comm-live-dot" style="margin-right:4px"></span> Live</div>
+          </div>
+        </div>
+
+        <!-- AMA host -->
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--white);border-bottom:1px solid var(--sand)">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--sage-lt);border:2px solid var(--sage);display:flex;align-items:center;justify-content:center;font-size:24px">👩🏾</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700;color:var(--espresso)">Amara Nakato</div>
+            <div style="font-size:11px;color:var(--slate);margin-top:1px">Coffee farmer · Kampala, Uganda</div>
+          </div>
+          <div style="font-size:10px;color:var(--sage);font-weight:600;background:var(--sage-lt);padding:4px 10px;border-radius:12px">42 watching</div>
+        </div>
+
+        <div class="sec-label">Questions & answers</div>
+
+        <div class="comm-ama-card" style="border-color:var(--sand);cursor:default">
+          <div class="comm-ama-body" style="padding:0">
+            <div class="comm-ama-q"><strong>Sarah K.:</strong> What time do you wake up to start picking cherries?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">I'm usually in the field by 6am. The mornings are cool in Kampala and the cherries are firmest then. My daughter helps after school!</span></div>
+            <div class="comm-ama-q"><strong>Jake R.:</strong> What does your coffee taste like to YOU?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">Ha! My daughter says chocolate. I taste something like honey and red berries. But I'm biased 😄</span></div>
+            <div class="comm-ama-q"><strong>Maria L.:</strong> Has the premium pay changed your daily life?<br><span style="color:var(--sage);font-size:11px;margin-top:4px;display:inline-block">Amara:</span> <span style="font-size:11px">Yes — my daughter is now in a better school. I also bought new drying beds. Before Farm2Cup, I couldn't afford either.</span></div>
+            <div class="comm-ama-q" style="opacity:.5"><strong>Mike T.:</strong> How do you decide when cherries are ripe enough to pick?<br><span style="font-size:10px;color:var(--tan);display:block;margin-top:3px">⏳ Waiting for Amara's answer...</span></div>
+          </div>
+        </div>
+
+        <!-- Ask input -->
+        <div style="margin:6px 16px 0;display:flex;gap:8px;align-items:center;">
+          <input style="flex:1;background:var(--sand);border:none;border-radius:var(--r-md);padding:12px 14px;font-size:13px;color:var(--slate);outline:none;font-family:inherit" placeholder="Ask Amara a question...">
+          <div style="width:40px;height:40px;background:var(--espresso);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" onclick="cToast('📨 Question submitted! Amara will answer shortly.')"><span style="color:#fff;font-size:16px">↑</span></div>
+        </div>
+
+        <div style="padding:12px 20px;font-size:10px;color:var(--tan);text-align:center;line-height:1.5">This Q&A connects you directly with the farmer who grew your coffee. All messages are moderated by Coda.</div>
+
+        <div style="height:14px"></div>
+      </div>
+      <nav class="bottom-nav">
+        <div class="nav-item" onclick="cTab('home')"><div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="nav-label">Discover</div></div>
+        <div class="nav-item active" onclick="cTab('community')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="nav-label">Community</div></div>
         <div class="nav-item" onclick="cTab('impact')"><div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="nav-label">Impact</div></div>
       </nav>
     </div>
@@ -547,7 +814,7 @@ function setEd(ed){
   document.querySelectorAll('.ed-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.ed-btn').forEach(b=>{if((ed==='consumer'&&b.textContent.includes('Consumer'))||(ed==='farmer'&&b.textContent.includes('Farmer')))b.classList.add('active');});
 }
-const CS=['home','scan','reveal','journey','impact','campaigns','story'];
+const CS=['home','scan','reveal','journey','impact','campaigns','story','community','ama'];
 function cGo(id){CS.forEach(s=>{const el=document.getElementById('c-'+s);if(el){el.classList.toggle('active',s===id);if(s===id){const b=el.querySelector('.scroll-body');if(b)b.scrollTop=0;}}});}
 function cTab(id){cGo(id);}
 const FS=['home','upload','learn'];
@@ -569,8 +836,24 @@ function joinCamp(btn,key){
   if(key==='c2'){const b=document.getElementById('cp-bar2');const v=document.getElementById('cp-val2');if(b)b.style.width='85.7%';if(v)v.textContent='857 / 1,000';}
   cToast('🫘 You joined the campaign! Amara will see your support.');
 }
+function commFilter(el){
+  el.parentElement.querySelectorAll('.comm-filter').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+  cToast('Showing: '+el.textContent);
+}
+function toggleLike(id){
+  const el=document.getElementById(id);
+  if(el.classList.contains('liked')){
+    el.classList.remove('liked');
+    el.querySelector('.comm-action-ico').textContent='🤍';
+  }else{
+    el.classList.add('liked');
+    el.querySelector('.comm-action-ico').textContent='❤️';
+    cToast('❤️ Liked!');
+  }
+}
 document.addEventListener('keydown',e=>{
-  if(curEd==='consumer'){const m={'1':'home','2':'scan','3':'reveal','4':'journey','5':'impact','6':'campaigns','7':'story'};if(m[e.key])cGo(m[e.key]);}
+  if(curEd==='consumer'){const m={'1':'home','2':'community','3':'impact','4':'scan','5':'reveal','6':'journey','7':'campaigns','8':'story','9':'ama'};if(m[e.key])cGo(m[e.key]);}
   else{const m={'1':'home','2':'upload','3':'learn'};if(m[e.key])fGo(m[e.key]);}
   if(e.key==='f')setEd('farmer');
   if(e.key==='c')setEd('consumer');
